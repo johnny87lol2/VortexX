@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VortexX | Official Utility</title>
+    <style>
+        :root {
+            --primary: #8A2BE2; /* 紫色 */
+            --secondary: #00BFFF; /* 冰藍 */
+            --bg: #050505;
+        }
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.1) 0%, transparent 80%);
+        }
+        .container {
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 1), 0 0 15px rgba(138, 43, 226, 0.1);
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            backdrop-filter: blur(15px);
+        }
+        h1 {
+            font-size: 3.2rem;
+            margin: 0;
+            letter-spacing: -1px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+        .tagline { color: #666; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 25px; text-transform: uppercase; }
+        
+        .status-indicator {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00FF00;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .download-btn {
+            display: block;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+
+        /* EXE 下載按鈕 - 閃耀紫色 */
+        .exe-btn {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(138, 43, 226, 0.3);
+        }
+        .exe-btn:hover { background: #9d44ef; transform: translateY(-3px); }
+
+        /* ZIP 下載按鈕 - 空心簡潔 */
+        .zip-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: #ccc;
+        }
+        .zip-btn:hover { background: #1a1a1a; color: white; border-color: #666; }
+
+        .footer-info {
+            margin-top: 25px;
+            font-size: 0.7rem;
+            color: #333;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>VORTEX-X</h1>
+        <div class="tagline">Next-Gen Execution</div>
+        
+        <div class="status-indicator">● OPERATIONAL: BYFRON BYPASSED (v6.1)</div>
+
+        <a href="https://www.mediafire.com/file/culnqi9weu7l3ih/installer.exe/file" class="download-btn exe-btn" target="_blank">
+            DOWNLOAD INSTALLER (.EXE)
+        </a>
+        
+        <a href="https://www.mediafire.com/file/x0wlrvon6zo1ecn/000qq.zip/file" class="download-btn zip-btn" target="_blank">
+            MANUAL PACKAGE (.ZIP)
+        </a>
+
+        <div class="footer-info">
+            VortexX 6.1.25 Stable Build<br>
+            Supports: FOV Lock-on, Nearest Target, ESP<br>
+            © 2026 VortexX Software
+        </div>
+    </div>
+
+</body>
+</html>
