@@ -3,115 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VortexX | Official Utility</title>
+    <title>VortexX | 全方位遊戲啟動優化器</title>
     <style>
         :root {
-            --primary: #8A2BE2; /* 紫色 */
-            --secondary: #00BFFF; /* 冰藍 */
+            --primary: #00D4FF;
+            --secondary: #00FFCC;
             --bg: #050505;
+            --card-bg: #111111;
         }
+
         body {
+            margin: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             background-color: var(--bg);
             color: white;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
+            scroll-behavior: smooth;
+        }
+
+        /* 導覽列 */
+        nav {
+            padding: 15px 10%;
             display: flex;
+            justify-content: space-between;
             align-items: center;
+            background: rgba(0, 0, 0, 0.9);
+            position: fixed;
+            top: 0; width: 80%; z-index: 1000;
+        }
+
+        .logo { font-size: 22px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
+
+        /* 主視覺 */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-            background: radial-gradient(circle at center, rgba(138, 43, 226, 0.1) 0%, transparent 80%);
-        }
-        .container {
-            background: rgba(10, 10, 10, 0.8);
-            border: 1px solid rgba(138, 43, 226, 0.4);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 1), 0 0 15px rgba(138, 43, 226, 0.1);
-            max-width: 420px;
-            width: 90%;
+            align-items: center;
+            background: radial-gradient(circle at 50% 50%, #102a43 0%, #050505 100%);
+            padding: 0 20px;
             text-align: center;
-            backdrop-filter: blur(15px);
         }
-        h1 {
-            font-size: 3.2rem;
-            margin: 0;
-            letter-spacing: -1px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 900;
-        }
-        .tagline { color: #666; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 25px; text-transform: uppercase; }
+
+        h1 { font-size: 4rem; margin: 0; background: linear-gradient(45deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; }
         
-        .status-indicator {
-            background: rgba(0, 255, 0, 0.1);
-            color: #00FF00;
-            border: 1px solid rgba(0, 255, 0, 0.3);
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            display: inline-block;
-            margin-bottom: 30px;
-        }
-
-        .download-btn {
-            display: block;
-            padding: 18px;
-            margin-bottom: 12px;
-            border-radius: 12px;
+        .btn-main {
+            margin-top: 35px;
+            padding: 20px 60px;
+            background: linear-gradient(45deg, var(--primary), #00a2ff);
+            color: black;
             text-decoration: none;
+            border-radius: 12px;
+            font-size: 20px;
             font-weight: 800;
-            font-size: 0.95rem;
             transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+        .btn-main:hover { box-shadow: 0 0 35px var(--primary); transform: translateY(-3px); }
+
+        /* Discord 預覽 */
+        .preview-section { padding: 60px 10%; text-align: center; background: #080808; }
+        .discord-mockup {
+            background: #2f3136;
+            width: 300px;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 30px auto;
+            text-align: left;
+            border-left: 5px solid var(--primary);
         }
 
-        /* EXE 下載按鈕 - 閃耀紫色 */
-        .exe-btn {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 8px 20px rgba(138, 43, 226, 0.3);
-        }
-        .exe-btn:hover { background: #9d44ef; transform: translateY(-3px); }
+        /* FAQ 區塊 */
+        .faq-section { padding: 80px 15%; }
+        .faq-item { background: var(--card-bg); padding: 25px; border-radius: 15px; margin-bottom: 20px; transition: 0.3s; border: 1px solid #222; }
+        .faq-item:hover { border-color: var(--primary); }
+        .faq-item h4 { margin: 0 0 10px 0; color: var(--primary); font-size: 1.1rem; }
+        .faq-item p { margin: 0; color: #aaa; line-height: 1.6; }
 
-        /* ZIP 下載按鈕 - 空心簡潔 */
-        .zip-btn {
-            background: transparent;
-            border: 1px solid #333;
-            color: #ccc;
-        }
-        .zip-btn:hover { background: #1a1a1a; color: white; border-color: #666; }
-
-        .footer-info {
-            margin-top: 25px;
-            font-size: 0.7rem;
-            color: #333;
-            line-height: 1.6;
-        }
+        footer { text-align: center; padding: 40px; font-size: 13px; color: #444; border-top: 1px solid #111; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>VORTEX-X</h1>
-        <div class="tagline">Next-Gen Execution</div>
-        
-        <div class="status-indicator">● OPERATIONAL: BYFRON BYPASSED (v6.1)</div>
+    <nav>
+        <div class="logo">VORTEX X</div>
+    </nav>
 
-        <a href="https://www.mediafire.com/file/culnqi9weu7l3ih/installer.exe/file" class="download-btn exe-btn" target="_blank">
-            DOWNLOAD INSTALLER (.EXE)
-        </a>
-        
-        <a href="https://www.mediafire.com/file/x0wlrvon6zo1ecn/000qq.zip/file" class="download-btn zip-btn" target="_blank">
-            MANUAL PACKAGE (.ZIP)
-        </a>
+    <section class="hero">
+        <h1>VortexX Launcher</h1>
+        <p style="color: #bbb; margin-top: 20px; font-size: 1.2rem; max-width: 600px;">
+            打破 Bloxstrap 的協議限制，專為極致玩家設計的智能啟動器。自動優化系統資源，讓你每一場戰鬥都領先一步。
+        </p>
+        <a href="https://www.mediafire.com/file/4apmte01hzdp2yj/VortexX_Launcher.exe/file" target="_blank" class="btn-main">立即免費下載</a>
+        <p style="margin-top: 15px; font-size: 0.8rem; color: #555;">版本 1.1 | 支援 Windows 10/11</p>
+    </section>
 
-        <div class="footer-info">
-            VortexX 6.1.25 Stable Build<br>
-            Supports: FOV Lock-on, Nearest Target, ESP<br>
-            © 2026 VortexX Software
+    <section class="preview-section">
+        <h2>Discord 狀態聯動</h2>
+        <p style="color: #888;">讓你的朋友知道你正在使用最強大的加速器</p>
+        <div class="discord-mockup">
+            <div style="color: #8e9297; font-size: 11px; font-weight: bold; margin-bottom: 8px;">正在玩</div>
+            <div style="display: flex; align-items: center;">
+                <div style="width: 45px; height: 45px; background: #00D4FF; border-radius: 8px; margin-right: 12px; display:flex; align-items:center; justify-content:center; font-weight:bold; color:black;">VX</div>
+                <div>
+                    <div style="color: white; font-weight: bold; font-size: 14px;">VortexX</div>
+                    <div style="color: #b9bbbe; font-size: 13px;">正在遊戲中</div>
+                    <div style="color: #b9bbbe; font-size: 13px;">透過 VortexX 極致加速</div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <section class="faq-section">
+        <h2 style="text-align: center; margin-bottom: 40px;">常見問題 FAQ</h2>
+        
+        <div class="faq-item">
+            <h4>為什麼要選擇 VortexX 而不是 Bloxstrap？</h4>
+            <p>VortexX 採用「純淨路徑偵測」技術，不會強行修改你的系統註冊表，能完美避免啟動衝突，且安裝體積更輕量，專注於系統效能優化。</p>
+        </div>
+
+        <div class="faq-item">
+            <h4>安裝時被 Windows Defender 攔截怎麼辦？</h4>
+            <p>這是因為軟體會執行優化系統優先權的指令（UAC 權限）。請點擊「仍要執行」，這是一個專為玩家開發的安全工具。</p>
+        </div>
+
+        <div class="faq-item">
+            <h4>我該如何維持 Discord 的狀態顯示？</h4>
+            <p>只要保持 VortexX Launcher 視窗開啟或縮小到後台，Discord 就會持續顯示你的專業玩家狀態。</p>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 VortexX Project. 本產品不隸屬於 Roblox Corporation。
+    </footer>
 
 </body>
 </html>
