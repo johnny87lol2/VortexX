@@ -27,7 +27,7 @@ Keep Roblox up to date in a folder you choose, launch it with one click, and see
 
 ## Download and install
 
-1. Go to the [Releases page](https://github.com/johnny66687lol3-sketch/Vor/releases) and download the latest `VortexX.zip`.
+1. Go to the [Releases page](https://github.com/johnny87lol2/VortexX/releases) and download the latest `VortexX.zip`.
 2. Extract it and run `VortexX.exe`.
 3. Open **Install**, choose a folder, and press **Install Roblox**.
 4. Open **Launch** and press **Launch Roblox**.
@@ -37,7 +37,7 @@ Keep Roblox up to date in a folder you choose, launch it with one click, and see
 Requirements: Windows 10/11, [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0), Visual Studio 2022 (optional).
 
 ```bash
-git clone https://github.com/johnny66687lol3-sketch/Vor.git
+git clone https://github.com/johnny87lol2/VortexX.git
 cd Vor
 dotnet build -c Release
 ```
