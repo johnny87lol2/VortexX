@@ -38,7 +38,7 @@ Requirements: Windows 10/11, [.NET 8 SDK](https://dotnet.microsoft.com/download/
 
 ```bash
 git clone https://github.com/johnny87lol2/VortexX.git
-cd Vor
+cd VortexX
 dotnet build -c Release
 ```
 
