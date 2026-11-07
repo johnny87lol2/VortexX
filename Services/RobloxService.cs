@@ -240,9 +240,29 @@ namespace VortexX.Services
             catch { return false; }
         }
 
+        public static DateTime? GetRobloxStartTime()
+        {
+            try
+            {
+                DateTime? earliest = null;
+                foreach (Process p in Process.GetProcessesByName("RobloxPlayerBeta"))
+                {
+                    try
+                    {
+                        DateTime t = p.StartTime;
+                        if (earliest == null || t < earliest.Value) earliest = t;
+                    }
+                    catch { }
+                    p.Dispose();
+                }
+                return earliest;
+            }
+            catch { return null; }
+        }
+
         // ───────── 伺服器偵測 ─────────
         static readonly Regex JoinRx = new Regex(@"Joining game '([0-9a-fA-F\-]{36})' place ([0-9]+) at ([0-9\.]+)");
-        static readonly Regex RccRx = new Regex(@"RCC Server Address\s*=\s*([0-9\.]+)");
+        static readonly Regex UdmuxRx = new Regex(@"UDMUX Address = ([0-9\.]+), Port = [0-9]+ \| RCC Server Address = ([0-9\.]+), Port = [0-9]+");
         static readonly Regex JoinedRx = new Regex(@"serverId:\s*([0-9\.]+)\|[0-9]+");
 
         static string ReadShared(string path)
@@ -281,8 +301,9 @@ namespace VortexX.Services
                     info.PlaceId = m.Groups[2].Value;
                     info.ServerIp = m.Groups[3].Value;
                     string after = text.Substring(m.Index);
-                    Match r = RccRx.Match(after);
-                    if (r.Success) info.ServerIp = r.Groups[1].Value;
+                    // Bloxstrap 的做法：伺服器多半有 UDMUX 代理，第一個位址才是公開 IP（RCC 位址常是 10.x 內網）
+                    Match u = UdmuxRx.Match(after);
+                    if (u.Success) info.ServerIp = u.Groups[1].Value;
                     else
                     {
                         Match j = JoinedRx.Match(after);
@@ -352,7 +373,7 @@ namespace VortexX.Services
                             res.Components.Add(sc);
                         }
                     }
-                    return res;
+                    return await FillComponents(res);
                 }
             }
             catch { }
@@ -365,13 +386,24 @@ namespace VortexX.Services
                 if (low.Contains("all systems operational") || low.Contains("fully operational"))
                 {
                     res.Indicator = "none";
-                    return res;
+                    return await FillComponents(res);
                 }
             }
             catch { }
 
             // 3) 實際連線探測（絕不誤報大當機）
             return await ProbeAsync();
+        }
+
+        // 官方資料沒有服務清單時（例如網頁只有一句「全部正常」），用實際連線探測補上清單
+        static async Task<StatusResult> FillComponents(StatusResult res)
+        {
+            if (res.Components.Count == 0)
+            {
+                StatusResult probe = await ProbeAsync();
+                res.Components = probe.Components;
+            }
+            return res;
         }
 
         static async Task<StatusResult> ProbeAsync()

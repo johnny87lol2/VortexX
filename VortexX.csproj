@@ -9,10 +9,16 @@
     <Nullable>disable</Nullable>
     <RootNamespace>VortexX</RootNamespace>
     <AssemblyName>VortexX</AssemblyName>
+    <ApplicationIcon>VortexX.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="VortexX.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
   </ItemGroup>
 
 </Project>

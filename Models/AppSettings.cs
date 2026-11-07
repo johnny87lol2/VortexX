@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace VortexX.Models
@@ -16,5 +17,11 @@ namespace VortexX.Models
         public bool AutoStart { get; set; } = false;
         public AppLanguage Language { get; set; } = AppLanguage.English;
         public AppTheme Theme { get; set; } = AppTheme.Cyber;
+
+        // AI Chat（API 金鑰用 Windows DPAPI 加密後才存檔）
+        public string AiProvider { get; set; } = "Anthropic";
+        public Dictionary<string, string> AiModels { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> AiKeys { get; set; } = new Dictionary<string, string>();
+        public string AiBaseUrl { get; set; } = "https://openrouter.ai/api/v1";
     }
 }

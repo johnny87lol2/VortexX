@@ -62,6 +62,7 @@
                         <Button x:Name="BtnLaunch"   Click="Nav_Click" Tag="Launch"   Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
                         <Button x:Name="BtnStatus"   Click="Nav_Click" Tag="Status"   Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
                         <Button x:Name="BtnServer"   Click="Nav_Click" Tag="Server"   Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
+                        <Button x:Name="BtnChat"   Click="Nav_Click" Tag="Chat"   Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
                         <Border x:Name="NavSep2" Height="1" Margin="12,8"/>
                         <Button x:Name="BtnSettings" Click="Nav_Click" Tag="Settings" Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
                     </StackPanel>
@@ -319,6 +320,60 @@
                                     <StackPanel x:Name="PingPanel" Margin="14,10"/>
                                 </StackPanel>
                             </Border>
+                        </StackPanel>
+
+                        <!-- ═══ AI CHAT ═══ -->
+                        <StackPanel x:Name="PgChat" Visibility="Collapsed">
+                            <DockPanel Margin="0,0,0,16">
+                                <Button x:Name="BtnChatClear" Click="BtnChatClear_Click" DockPanel.Dock="Right" Padding="12,6" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
+                                <TextBlock x:Name="TxtChatTitle" FontFamily="Consolas" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"/>
+                            </DockPanel>
+
+                            <Border x:Name="ChatCfgCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <TextBlock x:Name="ChatCfgTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <Border x:Name="ChatCfgSep" Height="1"/>
+                                    <StackPanel Margin="14,12">
+                                        <TextBlock x:Name="ChatProviderLbl" FontFamily="Consolas" FontSize="11" Margin="0,0,0,6"/>
+                                        <WrapPanel Margin="0,0,0,8">
+                                            <Button x:Name="BtnProvAnthropic" Tag="Anthropic" Content="Claude (Anthropic)" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
+                                            <Button x:Name="BtnProvOpenAI" Tag="OpenAI" Content="OpenAI" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
+                                            <Button x:Name="BtnProvGemini" Tag="Gemini" Content="Google Gemini" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
+                                            <Button x:Name="BtnProvCustom" Tag="Custom" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
+                                        </WrapPanel>
+                                        <StackPanel x:Name="ChatBaseUrlPanel" Margin="0,0,0,10">
+                                            <TextBlock x:Name="ChatBaseUrlLbl" FontFamily="Consolas" FontSize="11" Margin="0,0,0,6"/>
+                                            <TextBox x:Name="ChatBaseUrlBox" FontFamily="Consolas" FontSize="12" Padding="8,7" BorderThickness="1" LostFocus="ChatBaseUrlBox_LostFocus"/>
+                                        </StackPanel>
+                                        <TextBlock x:Name="ChatApiKeyLbl" FontFamily="Consolas" FontSize="11" Margin="0,0,0,6"/>
+                                        <DockPanel>
+                                            <Button x:Name="BtnChatSaveKey" Click="BtnChatSaveKey_Click" DockPanel.Dock="Right" Padding="12,7" BorderThickness="1" FontFamily="Consolas" FontSize="11" Margin="8,0,0,0"/>
+                                            <PasswordBox x:Name="ChatKeyBox" FontFamily="Consolas" FontSize="12" Padding="8,7" BorderThickness="1"/>
+                                        </DockPanel>
+                                        <TextBlock x:Name="ChatKeyStatus" FontFamily="Consolas" FontSize="10" Margin="0,6,0,0"/>
+                                        <TextBlock x:Name="ChatKeyNote" FontFamily="Consolas" FontSize="9" TextWrapping="Wrap" Margin="0,2,0,12"/>
+                                        <TextBlock x:Name="ChatModelLbl" FontFamily="Consolas" FontSize="11" Margin="0,0,0,6"/>
+                                        <DockPanel>
+                                            <Button x:Name="BtnChatFetch" Click="BtnChatFetch_Click" DockPanel.Dock="Right" Padding="12,7" BorderThickness="1" FontFamily="Consolas" FontSize="11" Margin="8,0,0,0"/>
+                                            <TextBox x:Name="ChatModelBox" FontFamily="Consolas" FontSize="12" Padding="8,7" BorderThickness="1" LostFocus="ChatModelBox_LostFocus"/>
+                                        </DockPanel>
+                                        <WrapPanel x:Name="ChatModelChips" Margin="0,8,0,0"/>
+                                        <TextBlock x:Name="ChatModelStatus" FontFamily="Consolas" FontSize="10" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border x:Name="ChatLogCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12">
+                                <ScrollViewer x:Name="ChatScroll" Height="320" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel x:Name="ChatMessages" Margin="12"/>
+                                </ScrollViewer>
+                            </Border>
+
+                            <DockPanel>
+                                <Button x:Name="BtnChatSend" Click="BtnChatSend_Click" DockPanel.Dock="Right" Padding="20,10" BorderThickness="1" FontFamily="Consolas" FontSize="12" Margin="8,0,0,0"/>
+                                <TextBox x:Name="ChatInput" FontFamily="Consolas" FontSize="12" Padding="8,10" BorderThickness="1" KeyDown="ChatInput_KeyDown"/>
+                            </DockPanel>
+                            <TextBlock x:Name="ChatHint" FontFamily="Consolas" FontSize="10" TextWrapping="Wrap" Margin="0,8,0,0"/>
                         </StackPanel>
 
                         <!-- ═══ SETTINGS ═══ -->

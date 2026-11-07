@@ -49,7 +49,7 @@ namespace VortexX.Views
         {
             InitializeComponent();
 
-            _s = SettingsService.Load();
+            _s = App.Settings.Prop;
             Lang.Set(_s.Language);
             Theme.Apply(_s.Theme);
 
@@ -62,6 +62,7 @@ namespace VortexX.Views
             MaxHeight = SystemParameters.WorkArea.Height;
             MaxWidth = SystemParameters.WorkArea.Width;
 
+            RefreshChatConfig();
             ApplyTheme();
             ApplyLang();
             MarkSelectedTheme();
@@ -186,6 +187,29 @@ namespace VortexX.Views
             InputIp.BorderBrush = bd;
             InputIp.CaretBrush = ac;
 
+            // AI Chat
+            Cards(card, bd, ChatCfgCard, ChatLogCard);
+            Fill(bd, ChatCfgSep);
+            Fore(ac, TxtChatTitle);
+            Fore(gr, ChatCfgTitle, ChatProviderLbl, ChatBaseUrlLbl, ChatApiKeyLbl, ChatKeyNote, ChatModelLbl, ChatModelStatus, ChatHint);
+            foreach (TextBox tbx in new TextBox[] { ChatBaseUrlBox, ChatModelBox, ChatInput })
+            {
+                tbx.Background = bg;
+                tbx.Foreground = tx;
+                tbx.BorderBrush = bd;
+                tbx.CaretBrush = ac;
+            }
+            ChatKeyBox.Background = bg;
+            ChatKeyBox.Foreground = tx;
+            ChatKeyBox.BorderBrush = bd;
+            ChatKeyBox.CaretBrush = ac;
+            BtnStyle(ac, bg, ac, BtnChatSend);
+            BtnStyle(bg1, ac, bd, BtnChatSaveKey, BtnChatFetch, BtnChatClear);
+            BuildModelChips();
+            MarkProvider();
+            UpdateKeyStatus();
+            RenderChat();
+
             BtnStyle(ac, bg, ac, BtnGoInstall, BtnDoInstall, BtnDoLaunch);
             BtnStyle(bg1, ac, bd,
                 BtnGoLaunch, BtnCheckVer, BtnChangeDir, BtnClearLog, BtnRefreshStatus,
@@ -293,6 +317,23 @@ namespace VortexX.Views
             StgSavePathLbl.Text = Lang.T("settings.savepath");
             StgSavePathVal.Text = SettingsService.SavePath;
 
+            BtnChat.Content = Lang.T("nav.chat");
+            TxtChatTitle.Text = U("chat.title");
+            ChatCfgTitle.Text = U("chat.config");
+            ChatProviderLbl.Text = Lang.T("chat.provider");
+            BtnProvCustom.Content = Lang.T("chat.prov_custom");
+            ChatBaseUrlLbl.Text = Lang.T("chat.baseurl");
+            ChatApiKeyLbl.Text = Lang.T("chat.apikey");
+            BtnChatSaveKey.Content = Lang.T("chat.save");
+            ChatKeyNote.Text = Lang.T("chat.keynote");
+            ChatModelLbl.Text = Lang.T("chat.model");
+            BtnChatFetch.Content = Lang.T("chat.fetch");
+            BtnChatSend.Content = Lang.T("chat.send");
+            BtnChatClear.Content = Lang.T("chat.clear");
+            ChatHint.Text = Lang.T("chat.hint");
+            UpdateKeyStatus();
+            RenderChat();
+
             UpdateDynamic();
             UpdateLaunchPath();
             RenderStatus();
@@ -344,6 +385,7 @@ namespace VortexX.Views
             PgLaunch.Visibility = name == "Launch" ? Visibility.Visible : Visibility.Collapsed;
             PgStatus.Visibility = name == "Status" ? Visibility.Visible : Visibility.Collapsed;
             PgServer.Visibility = name == "Server" ? Visibility.Visible : Visibility.Collapsed;
+            PgChat.Visibility = name == "Chat" ? Visibility.Visible : Visibility.Collapsed;
             PgSettings.Visibility = name == "Settings" ? Visibility.Visible : Visibility.Collapsed;
             HighlightNav();
 
@@ -356,7 +398,7 @@ namespace VortexX.Views
         void HighlightNav()
         {
             ThemeColors c = Theme.Current;
-            Button[] navs = { BtnHome, BtnInstall, BtnLaunch, BtnStatus, BtnServer, BtnSettings };
+            Button[] navs = { BtnHome, BtnInstall, BtnLaunch, BtnStatus, BtnServer, BtnChat, BtnSettings };
             foreach (Button b in navs)
             {
                 bool act = (b.Tag as string) == _page;
