@@ -59,4 +59,4 @@ VortexX has no telemetry and no account. It only contacts Roblox endpoints (vers
 
 ## Contributing
 
-Issues and pull requests are welcome. For larger changes, please open an issue first to discuss what you would like to change.
+Issues and pull requests are welcome. For larger changes, please join the Discord https://discord.gg/sC4pcvq3zj go to chat and discuss what you would like to change.
