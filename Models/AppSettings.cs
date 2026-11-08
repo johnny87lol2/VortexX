@@ -15,6 +15,7 @@ namespace VortexX.Models
         public bool FlushDns { get; set; } = true;
         public bool PowerMode { get; set; } = true;
         public bool AutoStart { get; set; } = false;
+        public bool Animations { get; set; } = true;
         public AppLanguage Language { get; set; } = AppLanguage.English;
         public AppTheme Theme { get; set; } = AppTheme.Cyber;
 

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 using VortexX.Models;
@@ -18,6 +19,29 @@ namespace VortexX.Views
         readonly List<ChatMsg> _chat = new List<ChatMsg>();
         bool _chatBusy;
         List<string> _modelList = new List<string>();
+        DateTime _chatStart;
+        DispatcherTimer _chatTimer;
+        TextBox _thinkingBox;
+
+        string ThinkingText()
+        {
+            return Lang.T("chat.thinking") + " " + (int)(DateTime.Now - _chatStart).TotalSeconds + "s";
+        }
+
+        void StartChatTimer()
+        {
+            _chatStart = DateTime.Now;
+            if (_chatTimer == null)
+            {
+                _chatTimer = new DispatcherTimer();
+                _chatTimer.Interval = TimeSpan.FromSeconds(1);
+                _chatTimer.Tick += (sender2, args2) =>
+                {
+                    if (_chatBusy && _thinkingBox != null) _thinkingBox.Text = ThinkingText();
+                };
+            }
+            _chatTimer.Start();
+        }
 
         // ═════════ 設定讀寫 ═════════
         AiProvider CurProvider()
@@ -97,7 +121,7 @@ namespace VortexX.Views
                 b.Padding = new Thickness(8, 3, 8, 3);
                 b.Margin = new Thickness(0, 0, 6, 6);
                 b.BorderThickness = new Thickness(1);
-                b.FontFamily = new FontFamily("Consolas");
+                b.FontFamily = new FontFamily("Segoe UI");
                 b.FontSize = 10;
                 b.Background = sel ? BrA(c.Accent, 40) : Br(c.Bg1);
                 b.BorderBrush = sel ? Br(c.Accent) : Br(c.Border);
@@ -312,6 +336,7 @@ namespace VortexX.Views
             ChatInput.Text = "";
             _chatBusy = true;
             BtnChatSend.IsEnabled = false;
+            StartChatTimer();
             RenderChat();
 
             try
@@ -353,6 +378,7 @@ namespace VortexX.Views
             {
                 _chatBusy = false;
                 BtnChatSend.IsEnabled = true;
+                if (_chatTimer != null) _chatTimer.Stop();
             }
             RenderChat();
         }
@@ -405,7 +431,7 @@ namespace VortexX.Views
                     btn.IsEnabled = !a.Applied;
                     btn.Padding = new Thickness(12, 5, 12, 5);
                     btn.BorderThickness = new Thickness(1);
-                    btn.FontFamily = new FontFamily("Consolas");
+                    btn.FontFamily = new FontFamily("Segoe UI");
                     btn.FontSize = 11;
                     btn.Background = Br(c.Accent);
                     btn.Foreground = Br(c.Bg);
@@ -420,7 +446,7 @@ namespace VortexX.Views
 
                     var label = new TextBlock();
                     label.Text = desc;
-                    label.FontFamily = new FontFamily("Consolas");
+                    label.FontFamily = new FontFamily("Segoe UI");
                     label.FontSize = 11;
                     label.Foreground = Br(c.Text);
                     label.TextWrapping = TextWrapping.Wrap;
@@ -442,8 +468,14 @@ namespace VortexX.Views
                 }
             }
 
+            _thinkingBox = null;
             if (_chatBusy)
-                ChatMessages.Children.Add(MakeBubble(Lang.T("chat.thinking"), false, false, c));
+            {
+                UIElement bubble = MakeBubble(ThinkingText(), false, false, c);
+                Border bb = bubble as Border;
+                if (bb != null) _thinkingBox = bb.Child as TextBox;
+                ChatMessages.Children.Add(bubble);
+            }
 
             ChatScroll.ScrollToEnd();
         }

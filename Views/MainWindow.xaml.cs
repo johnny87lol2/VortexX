@@ -58,6 +58,9 @@ namespace VortexX.Views
             ChkFlushDns.IsChecked = _s.FlushDns;
             ChkPowerMode.IsChecked = _s.PowerMode;
             ChkAutoStart.IsChecked = _s.AutoStart;
+            ChkAnim.IsChecked = _s.Animations;
+            Motion.Enabled = _s.Animations;
+            Motion.Init();
 
             MaxHeight = SystemParameters.WorkArea.Height;
             MaxWidth = SystemParameters.WorkArea.Width;
@@ -84,6 +87,8 @@ namespace VortexX.Views
             SizeChanged += (a, b) => UpdateBars();
             Loaded += async (a, b) =>
             {
+                var openFade = new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(350));
+                if (Motion.Enabled) WinBorder.BeginAnimation(UIElement.OpacityProperty, openFade);
                 Tick();
                 await CheckVersionAsync();
             };
@@ -141,8 +146,30 @@ namespace VortexX.Views
             WinBorder.Background = bg;
             WinBorder.BorderBrush = bd;
             WinBorder.BorderThickness = new Thickness(1);
-            SidebarBorder.Background = bg1;
-            TitlebarBorder.Background = bg1;
+            SidebarBorder.Background = card;
+            SidebarBorder.BorderBrush = bd;
+            TitlebarBorder.Background = Brushes.Transparent;
+            FooterBorder.Background = bg1;
+            Resources["AccentBrush"] = Br(c.Accent);
+            Resources["LineBrush"] = Br(c.Gray);
+            Resources["OnAccentBrush"] = Br(c.Bg);
+            Foreground = tx;
+
+            RbChip.Background = card;
+            RbChip.BorderBrush = bd;
+            var heroBg = new LinearGradientBrush();
+            heroBg.StartPoint = new Point(0, 0);
+            heroBg.EndPoint = new Point(1, 1);
+            heroBg.GradientStops.Add(new GradientStop(((SolidColorBrush)BrA(c.Accent, 70)).Color, 0));
+            heroBg.GradientStops.Add(new GradientStop(((SolidColorBrush)BrA(c.Accent, 18)).Color, 0.55));
+            heroBg.GradientStops.Add(new GradientStop(((SolidColorBrush)Br(c.Card)).Color, 1));
+            HeroBanner.Background = heroBg;
+            HeroBanner.BorderBrush = BrA(c.Accent, 60);
+            Fore(tx, HeroGreeting, HmNewsTitle);
+            Fore(gr, HeroSub, HmNewT1, HmNewT2, HmNewT3);
+            Fore(ac, HmNewV1, HmNewV2, HmNewV3);
+            Cards(card, bd, HmNewsCard);
+            Fill(bd, HmNewsSep);
 
             Cards(card, bd,
                 HmCpuCard, HmRamCard, HmStatusCard, HmInfoCard, InstStatusCard, InstActionCard,
@@ -158,10 +185,10 @@ namespace VortexX.Views
                 SbCpuTrack, SbRamTrack, HmCpuTrack, HmRamTrack, ProgressTrack);
             Fill(ac, SbCpuBar, SbRamBar, HmCpuBar, HmRamBar, ProgFill);
 
-            Fore(ac,
-                LogoText, TxtHomeTitle, TxtInstallTitle, TxtLaunchTitle, TxtStatusTitle,
-                TxtServerTitle, TxtSettingsTitle, SrvIpVal, StgAboutVer, ProgressPct,
-                HmCpuVal, HmRamVal);
+            Fore(ac, LogoText, SrvIpVal, StgAboutVer, ProgressPct);
+            Fore(tx,
+                TxtHomeTitle, TxtInstallTitle, TxtLaunchTitle, TxtStatusTitle,
+                TxtServerTitle, TxtSettingsTitle, HmCpuVal, HmRamVal);
 
             Fore(gr,
                 SbVer, SbCpuLbl, SbRamLbl, SbCpuVal, SbRamVal, TxtRbSb, TitleText,
@@ -180,7 +207,7 @@ namespace VortexX.Views
                 SrvJobIdVal, SrvCountryVal, SrvRegionVal, SrvCityVal, SrvTzVal, SrvIspVal,
                 SrvCoordVal, SrvAsVal, StgDirVal);
 
-            ForeC(tx, ChkFlushDns, ChkPowerMode, ChkAutoStart, RbZh, RbEn);
+            ForeC(tx, ChkFlushDns, ChkPowerMode, ChkAutoStart, ChkAnim, RbZh, RbEn);
 
             InputIp.Background = bg;
             InputIp.Foreground = tx;
@@ -210,9 +237,9 @@ namespace VortexX.Views
             UpdateKeyStatus();
             RenderChat();
 
-            BtnStyle(ac, bg, ac, BtnGoInstall, BtnDoInstall, BtnDoLaunch);
+            BtnStyle(ac, bg, ac, BtnGoLaunch, BtnDoInstall, BtnDoLaunch);
             BtnStyle(bg1, ac, bd,
-                BtnGoLaunch, BtnCheckVer, BtnChangeDir, BtnClearLog, BtnRefreshStatus,
+                BtnGoInstall, BtnCheckVer, BtnChangeDir, BtnClearLog, BtnRefreshStatus,
                 BtnRefreshServer, BtnIpLookup, BtnPing, BtnChangeDirStg);
             BtnStyle(Brushes.Transparent, gr, Brushes.Transparent, BtnMin, BtnMax, BtnClose);
 
@@ -230,7 +257,7 @@ namespace VortexX.Views
         }
 
         // ═════════ 套用語言 ═════════
-        static string U(string key) { return Lang.T(key).ToUpperInvariant(); }
+        static string U(string key) { return Lang.T(key); }
 
         void ApplyLang()
         {
@@ -243,6 +270,14 @@ namespace VortexX.Views
             BtnServer.Content = Lang.T("nav.server");
             BtnSettings.Content = Lang.T("nav.settings");
 
+            int hr = DateTime.Now.Hour;
+            string gk = hr < 12 ? "home.greet_m" : (hr < 18 ? "home.greet_a" : "home.greet_e");
+            HeroGreeting.Text = string.Format(Lang.T(gk), Environment.UserName);
+            HeroSub.Text = Lang.T("home.hero_sub");
+            HmNewsTitle.Text = Lang.T("home.news");
+            HmNewV1.Text = Lang.T("home.n1v"); HmNewT1.Text = Lang.T("home.n1t");
+            HmNewV2.Text = Lang.T("home.n2v"); HmNewT2.Text = Lang.T("home.n2t");
+            HmNewV3.Text = Lang.T("home.n3v"); HmNewT3.Text = Lang.T("home.n3t");
             TxtHomeTitle.Text = U("home.title");
             HmStatusLbl.Text = Lang.T("home.status");
             HmInfoTitle.Text = U("home.info");
@@ -311,8 +346,9 @@ namespace VortexX.Views
             TCardArcticDesc.Text = Lang.T("theme.arctic");
             StgGenTitle.Text = U("settings.general");
             ChkAutoStart.Content = Lang.T("settings.autostart");
+            ChkAnim.Content = Lang.T("settings.anim");
             StgAboutTitle.Text = U("settings.about");
-            StgAboutVer.Text = "VortexX v3.0";
+            StgAboutVer.Text = "VortexX";
             StgAboutDesc.Text = Lang.T("settings.aboutdesc");
             StgSavePathLbl.Text = Lang.T("settings.savepath");
             StgSavePathVal.Text = SettingsService.SavePath;
@@ -375,7 +411,38 @@ namespace VortexX.Views
         }
 
         void BtnGoInstall_Click(object sender, RoutedEventArgs e) { ShowPage("Install"); }
-        void BtnGoLaunch_Click(object sender, RoutedEventArgs e) { ShowPage("Launch"); }
+        async void BtnGoLaunch_Click(object sender, RoutedEventArgs e)
+        {
+            // 大廳一鍵啟動：不用跳到啟動頁
+            if (_launching) return;
+            _launching = true;
+            BtnGoLaunch.IsEnabled = false;
+            BtnDoLaunch.IsEnabled = false;
+            object oldContent = BtnGoLaunch.Content;
+            BtnGoLaunch.Content = Lang.T("home.launching");
+            string err = null;
+            try
+            {
+                bool fd = ChkFlushDns.IsChecked == true;
+                bool pw = ChkPowerMode.IsChecked == true;
+                string dir = _s.InstallDir;
+                Action<string> log = m => Dispatcher.BeginInvoke(new Action(() => AppendLog(LaunchLogText, LaunchLogScroll, m)));
+                await Task.Run(() => RobloxService.Launch(dir, fd, pw, log));
+            }
+            catch (Exception ex)
+            {
+                err = ex.Message;
+                AppendLog(LaunchLogText, LaunchLogScroll, string.Format(Lang.T("log.error"), ex.Message));
+            }
+            finally
+            {
+                _launching = false;
+                BtnGoLaunch.IsEnabled = true;
+                BtnDoLaunch.IsEnabled = true;
+                BtnGoLaunch.Content = oldContent;
+            }
+            if (err != null) MessageBox.Show(err, "VortexX", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
 
         void ShowPage(string name)
         {
@@ -388,11 +455,41 @@ namespace VortexX.Views
             PgChat.Visibility = name == "Chat" ? Visibility.Visible : Visibility.Collapsed;
             PgSettings.Visibility = name == "Settings" ? Visibility.Visible : Visibility.Collapsed;
             HighlightNav();
+            AnimatePage(name);
 
             if (name == "Install") { var t1 = CheckVersionAsync(); }
             else if (name == "Launch") { UpdateLaunchPath(); }
             else if (name == "Status") { if (_status == null && !_statusBusy) { var t2 = RefreshStatusAsync(); } }
             else if (name == "Server") { if (!_srvBusy) { var t3 = RefreshServerAsync(); } }
+        }
+
+        // 換頁動畫：淡入 + 由下往上滑入
+        void AnimatePage(string name)
+        {
+            FrameworkElement pg = PgHome;
+            if (name == "Install") pg = PgInstall;
+            else if (name == "Launch") pg = PgLaunch;
+            else if (name == "Status") pg = PgStatus;
+            else if (name == "Server") pg = PgServer;
+            else if (name == "Chat") pg = PgChat;
+            else if (name == "Settings") pg = PgSettings;
+
+            if (!Motion.Enabled)
+            {
+                pg.BeginAnimation(UIElement.OpacityProperty, null);
+                pg.Opacity = 1;
+                pg.RenderTransform = Transform.Identity;
+                return;
+            }
+            var ease = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut };
+            var tt = new TranslateTransform(0, 18);
+            pg.RenderTransform = tt;
+            var fade = new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(320));
+            fade.EasingFunction = ease;
+            var slide = new System.Windows.Media.Animation.DoubleAnimation(18, 0, TimeSpan.FromMilliseconds(360));
+            slide.EasingFunction = ease;
+            pg.BeginAnimation(UIElement.OpacityProperty, fade);
+            tt.BeginAnimation(TranslateTransform.YProperty, slide);
         }
 
         void HighlightNav()
@@ -402,8 +499,8 @@ namespace VortexX.Views
             foreach (Button b in navs)
             {
                 bool act = (b.Tag as string) == _page;
-                b.Background = act ? BrA(c.Accent, 30) : Brushes.Transparent;
-                b.BorderBrush = act ? Br(c.Accent) : Brushes.Transparent;
+                b.Background = act ? BrA(c.Accent, 38) : Brushes.Transparent;
+                b.BorderBrush = Brushes.Transparent;
                 b.Foreground = act ? Br(c.Accent) : Br(c.Gray);
             }
         }
@@ -424,7 +521,16 @@ namespace VortexX.Views
         static void SetBar(Border track, Border bar, int pct)
         {
             double w = track.ActualWidth;
-            bar.Width = Math.Max(0, w * pct / 100.0);
+            double to = Math.Max(0, w * pct / 100.0);
+            if (!Motion.Enabled)
+            {
+                bar.BeginAnimation(FrameworkElement.WidthProperty, null);
+                bar.Width = to;
+                return;
+            }
+            var anim = new System.Windows.Media.Animation.DoubleAnimation(to, TimeSpan.FromMilliseconds(500));
+            anim.EasingFunction = new System.Windows.Media.Animation.CubicEase { EasingMode = System.Windows.Media.Animation.EasingMode.EaseOut };
+            bar.BeginAnimation(FrameworkElement.WidthProperty, anim);
         }
 
         void UpdateBars()
@@ -682,7 +788,7 @@ namespace VortexX.Views
 
                 var st = new TextBlock();
                 st.Text = label;
-                st.FontFamily = new FontFamily("Consolas");
+                st.FontFamily = new FontFamily("Segoe UI");
                 st.FontSize = 10;
                 st.Foreground = Br(cc);
                 st.VerticalAlignment = VerticalAlignment.Center;
@@ -690,7 +796,7 @@ namespace VortexX.Views
 
                 var nm = new TextBlock();
                 nm.Text = comp.Name;
-                nm.FontFamily = new FontFamily("Consolas");
+                nm.FontFamily = new FontFamily("Segoe UI");
                 nm.FontSize = 11;
                 nm.Foreground = Br(c.Text);
                 nm.TextTrimming = TextTrimming.CharacterEllipsis;
@@ -837,13 +943,13 @@ namespace VortexX.Views
             var l = new TextBlock();
             l.Text = label;
             l.Width = 100;
-            l.FontFamily = new FontFamily("Consolas");
+            l.FontFamily = new FontFamily("Segoe UI");
             l.FontSize = 11;
             l.Foreground = Br(Theme.Current.Gray);
 
             var v = new TextBlock();
             v.Text = val;
-            v.FontFamily = new FontFamily("Consolas");
+            v.FontFamily = new FontFamily("Segoe UI");
             v.FontSize = 11;
             v.Foreground = valBrush;
             v.TextWrapping = TextWrapping.Wrap;
@@ -867,7 +973,7 @@ namespace VortexX.Views
             {
                 var t = new TextBlock();
                 t.Text = Lang.T(_ipError);
-                t.FontFamily = new FontFamily("Consolas");
+                t.FontFamily = new FontFamily("Segoe UI");
                 t.FontSize = 11;
                 t.Foreground = Br(c.Red);
                 IpResultPanel.Children.Add(t);
@@ -926,7 +1032,7 @@ namespace VortexX.Views
 
                 var val = new TextBlock();
                 val.Text = txt;
-                val.FontFamily = new FontFamily("Consolas");
+                val.FontFamily = new FontFamily("Segoe UI");
                 val.FontSize = 11;
                 val.FontWeight = FontWeights.Bold;
                 val.Foreground = Br(col);
@@ -934,7 +1040,7 @@ namespace VortexX.Views
 
                 var nm = new TextBlock();
                 nm.Text = kv.Key;
-                nm.FontFamily = new FontFamily("Consolas");
+                nm.FontFamily = new FontFamily("Segoe UI");
                 nm.FontSize = 11;
                 nm.Foreground = Br(c.Text);
 
@@ -995,6 +1101,14 @@ namespace VortexX.Views
                 bool sel = (b.Tag as string) == _s.Theme.ToString();
                 b.BorderThickness = new Thickness(sel ? 3 : 1);
             }
+        }
+
+        void Anim_Click(object sender, RoutedEventArgs e)
+        {
+            _s.Animations = ChkAnim.IsChecked == true;
+            Motion.Enabled = _s.Animations;
+            SettingsService.Save(_s);
+            UpdateBars();
         }
 
         void AutoStart_Click(object sender, RoutedEventArgs e)

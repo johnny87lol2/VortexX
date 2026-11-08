@@ -29,12 +29,13 @@ namespace VortexX.Services
 
     public static class AiService
     {
+        const int TimeoutSeconds = 60;
         static readonly HttpClient Http = CreateHttp();
 
         static HttpClient CreateHttp()
         {
             var h = new HttpClient();
-            h.Timeout = TimeSpan.FromSeconds(120);
+            h.Timeout = TimeSpan.FromSeconds(TimeoutSeconds);
             return h;
         }
 
@@ -111,13 +112,24 @@ namespace VortexX.Services
 
         static async Task<JObject> SendJson(HttpRequestMessage req)
         {
-            using (req)
-            using (HttpResponseMessage resp = await Http.SendAsync(req))
+            string url = req.RequestUri.GetLeftPart(UriPartial.Path);
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            try
             {
-                string body = await resp.Content.ReadAsStringAsync();
-                if (!resp.IsSuccessStatusCode)
-                    throw new Exception("HTTP " + (int)resp.StatusCode + ": " + ErrMsg(body));
-                return JObject.Parse(body);
+                using (req)
+                using (HttpResponseMessage resp = await Http.SendAsync(req))
+                {
+                    string body = await resp.Content.ReadAsStringAsync();
+                    App.Logger.WriteLine("AiService", req.Method + " " + url + " -> " + (int)resp.StatusCode + " in " + sw.ElapsedMilliseconds + " ms");
+                    if (!resp.IsSuccessStatusCode)
+                        throw new Exception("HTTP " + (int)resp.StatusCode + ": " + ErrMsg(body));
+                    return JObject.Parse(body);
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                App.Logger.WriteLine("AiService", req.Method + " " + url + " timed out after " + sw.ElapsedMilliseconds + " ms");
+                throw new Exception(string.Format(Lang.T("chat.timeout"), TimeoutSeconds));
             }
         }
 

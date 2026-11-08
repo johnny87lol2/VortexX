@@ -1,14 +1,20 @@
 <Window x:Class="VortexX.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="VortexX" Height="660" Width="1020"
-        MinHeight="580" MinWidth="900"
+        Title="VortexX" Height="720" Width="1120"
+        MinHeight="640" MinWidth="1040"
         WindowStyle="None" AllowsTransparency="True"
         Background="Transparent"
+        FontFamily="Segoe UI" FontSize="13"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <!-- 全部按鈕共用的扁平樣式，顏色由程式碼依主題設定 -->
+        <!-- 主題色：預設值，程式會依所選風格換掉 -->
+        <SolidColorBrush x:Key="AccentBrush" Color="#22D3EE"/>
+        <SolidColorBrush x:Key="LineBrush" Color="#7B8CA3"/>
+        <SolidColorBrush x:Key="OnAccentBrush" Color="#070B12"/>
+
+        <!-- 按鈕：圓角扁平 -->
         <Style TargetType="Button">
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
@@ -18,14 +24,14 @@
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="3"
+                                CornerRadius="9"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bd" Property="Opacity" Value="0.8"/>
+                                <Setter TargetName="bd" Property="Opacity" Value="0.82"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="bd" Property="Opacity" Value="0.4"/>
@@ -35,171 +41,320 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- 輸入框：圓角，取得焦點時外框變主題色 -->
+        <Style TargetType="TextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="9">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="PasswordBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border x:Name="bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="9">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="bd" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 勾選框 -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" Background="Transparent">
+                            <Border x:Name="box" Width="20" Height="20" CornerRadius="6" BorderThickness="1"
+                                    BorderBrush="{DynamicResource LineBrush}" Background="Transparent" VerticalAlignment="Center">
+                                <TextBlock x:Name="tick" Text="✓" FontSize="13" FontWeight="Bold"
+                                           Foreground="{DynamicResource OnAccentBrush}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+                            </Border>
+                            <ContentPresenter Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="box" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="box" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                <Setter TargetName="tick" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="box" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 單選鈕 -->
+        <Style TargetType="RadioButton">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <StackPanel Orientation="Horizontal" Background="Transparent">
+                            <Grid Width="20" Height="20" VerticalAlignment="Center">
+                                <Ellipse x:Name="ring" StrokeThickness="1.5" Stroke="{DynamicResource LineBrush}" Fill="Transparent"/>
+                                <Ellipse x:Name="dot" Width="10" Height="10" Fill="{DynamicResource AccentBrush}" Visibility="Collapsed"/>
+                            </Grid>
+                            <ContentPresenter Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="dot" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="ring" Property="Stroke" Value="{DynamicResource AccentBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 細捲軸 -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent" Width="10">
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageUpCommand" Opacity="0" Focusable="False"/>
+                                </Track.DecreaseRepeatButton>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageDownCommand" Opacity="0" Focusable="False"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="#40FFFFFF" CornerRadius="4" Margin="2,0"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
-    <Border x:Name="WinBorder" CornerRadius="8">
+    <Border x:Name="WinBorder" CornerRadius="14" BorderThickness="1">
         <Border.Effect>
             <DropShadowEffect BlurRadius="30" ShadowDepth="0" Color="#000000" Opacity="0.6"/>
         </Border.Effect>
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="185"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="64"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="34"/>
+            </Grid.RowDefinitions>
 
-            <!-- ═══ SIDEBAR ═══ -->
-            <Border x:Name="SidebarBorder" Grid.Column="0" CornerRadius="8,0,0,8">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Top" Margin="16,20,16,12">
-                        <TextBlock x:Name="LogoText" Text="VORTEXX" FontFamily="Consolas" FontSize="18" FontWeight="Bold"/>
-                        <TextBlock x:Name="SbVer" Text="v3.0" FontFamily="Consolas" FontSize="10" Margin="0,2,0,0"/>
-                    </StackPanel>
-                    <Border DockPanel.Dock="Top" x:Name="NavSep1" Height="1" Margin="12,0"/>
+            <!-- ═══ TOP BAR ═══ -->
+            <Border x:Name="TitlebarBorder" Grid.Row="0" CornerRadius="14,14,0,0" MouseLeftButtonDown="TitleBar_Down">
+                <Grid Margin="22,0,10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                    <StackPanel DockPanel.Dock="Top" Margin="0,8,0,0">
-                        <Button x:Name="BtnHome"     Click="Nav_Click" Tag="Home"     Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
-                        <Button x:Name="BtnInstall"  Click="Nav_Click" Tag="Install"  Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
-                        <Button x:Name="BtnLaunch"   Click="Nav_Click" Tag="Launch"   Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
-                        <Button x:Name="BtnStatus"   Click="Nav_Click" Tag="Status"   Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
-                        <Button x:Name="BtnServer"   Click="Nav_Click" Tag="Server"   Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
-                        <Button x:Name="BtnChat"   Click="Nav_Click" Tag="Chat"   Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
-                        <Border x:Name="NavSep2" Height="1" Margin="12,8"/>
-                        <Button x:Name="BtnSettings" Click="Nav_Click" Tag="Settings" Margin="8,2" Padding="14,10" BorderThickness="2,0,0,0" HorizontalContentAlignment="Left" FontFamily="Consolas" FontSize="12"/>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock x:Name="LogoText" Text="VortexX" FontSize="19" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="SbVer" Visibility="Collapsed"/>
+                        <Border x:Name="NavSep1" Width="1" Height="22" Margin="22,0,0,0"/>
                     </StackPanel>
 
-                    <StackPanel DockPanel.Dock="Bottom" Margin="14,0,14,14">
-                        <Border x:Name="SbSep" Height="1" Margin="0,0,0,10"/>
-                        <DockPanel Margin="0,0,0,3">
-                            <TextBlock x:Name="SbCpuLbl" Text="CPU" FontFamily="Consolas" FontSize="10" DockPanel.Dock="Left" Width="35"/>
-                            <TextBlock x:Name="SbCpuVal" Text="—" FontFamily="Consolas" FontSize="10" DockPanel.Dock="Right" Width="35" TextAlignment="Right"/>
-                            <Border x:Name="SbCpuTrack" Height="3" CornerRadius="2" Margin="4,0">
-                                <Border x:Name="SbCpuBar" Height="3" CornerRadius="2" HorizontalAlignment="Left" Width="0"/>
-                            </Border>
-                        </DockPanel>
-                        <DockPanel Margin="0,0,0,8">
-                            <TextBlock x:Name="SbRamLbl" Text="RAM" FontFamily="Consolas" FontSize="10" DockPanel.Dock="Left" Width="35"/>
-                            <TextBlock x:Name="SbRamVal" Text="—" FontFamily="Consolas" FontSize="10" DockPanel.Dock="Right" Width="35" TextAlignment="Right"/>
-                            <Border x:Name="SbRamTrack" Height="3" CornerRadius="2" Margin="4,0">
-                                <Border x:Name="SbRamBar" Height="3" CornerRadius="2" HorizontalAlignment="Left" Width="0"/>
-                            </Border>
-                        </DockPanel>
+                    <Border x:Name="SidebarBorder" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            CornerRadius="13" BorderThickness="1" Padding="4">
                         <StackPanel Orientation="Horizontal">
-                            <Ellipse x:Name="RbDot" Width="7" Height="7" VerticalAlignment="Center"/>
-                            <TextBlock x:Name="TxtRbSb" FontFamily="Consolas" FontSize="10" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                            <Button x:Name="BtnHome" Click="Nav_Click" Tag="Home" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnInstall" Click="Nav_Click" Tag="Install" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnLaunch" Click="Nav_Click" Tag="Launch" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnStatus" Click="Nav_Click" Tag="Status" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnServer" Click="Nav_Click" Tag="Server" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnChat" Click="Nav_Click" Tag="Chat" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Border x:Name="NavSep2" Width="1" Height="18" Margin="6,0"/>
+                            <Button x:Name="BtnSettings" Click="Nav_Click" Tag="Settings" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
                         </StackPanel>
+                    </Border>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border x:Name="RbChip" BorderThickness="1" CornerRadius="15" Padding="12,6" Margin="0,0,10,0">
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse x:Name="RbDot" Width="8" Height="8" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="TxtRbSb" FontSize="12" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <Button x:Name="BtnMin"   Content="─" Width="40" Height="32" BorderThickness="0" FontSize="14" Click="BtnMin_Click"/>
+                        <Button x:Name="BtnMax"   Content="▢" Width="40" Height="32" BorderThickness="0" FontSize="13" Click="BtnMax_Click"/>
+                        <Button x:Name="BtnClose" Content="✕" Width="40" Height="32" BorderThickness="0" FontSize="13" Click="BtnClose_Click"/>
                     </StackPanel>
-                </DockPanel>
+                </Grid>
             </Border>
+            <Border x:Name="TitleSep" Grid.Row="0" Height="1" VerticalAlignment="Bottom"/>
+            <TextBlock x:Name="TitleText" Text="VortexX" Visibility="Collapsed"/>
 
-            <!-- ═══ MAIN ═══ -->
-            <Grid Grid.Column="1">
-                <Border x:Name="TitlebarBorder" Height="36" VerticalAlignment="Top"
-                        CornerRadius="0,8,0,0" MouseLeftButtonDown="TitleBar_Down">
-                    <DockPanel>
-                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                            <Button x:Name="BtnMin"   Content="─" Width="36" Height="36" BorderThickness="0" FontSize="14" Click="BtnMin_Click"/>
-                            <Button x:Name="BtnMax"   Content="▢" Width="36" Height="36" BorderThickness="0" FontSize="13" Click="BtnMax_Click"/>
-                            <Button x:Name="BtnClose" Content="✕" Width="36" Height="36" BorderThickness="0" FontSize="13" Click="BtnClose_Click"/>
-                        </StackPanel>
-                        <TextBlock x:Name="TitleText" Text="VORTEXX" FontFamily="Consolas" FontSize="11" VerticalAlignment="Center" Margin="16,0"/>
-                    </DockPanel>
-                </Border>
-                <Border x:Name="TitleSep" Height="1" VerticalAlignment="Top" Margin="0,36,0,0"/>
+            <!-- ═══ CONTENT ═══ -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <Grid Margin="28,24,28,24">
 
-                <ScrollViewer Margin="0,37,0,0" VerticalScrollBarVisibility="Auto">
-                    <Grid Margin="20">
-
-                        <!-- ═══ HOME ═══ -->
-                        <StackPanel x:Name="PgHome">
-                            <TextBlock x:Name="TxtHomeTitle" FontFamily="Consolas" FontSize="14" FontWeight="Bold" Margin="0,0,0,16"/>
-                            <Grid Margin="0,0,0,12">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/><ColumnDefinition Width="10"/><ColumnDefinition/><ColumnDefinition Width="10"/><ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Border x:Name="HmCpuCard" Grid.Column="0" BorderThickness="1" CornerRadius="4" Padding="14">
-                                    <StackPanel>
-                                        <TextBlock x:Name="HmCpuLbl" Text="CPU" FontFamily="Consolas" FontSize="11"/>
-                                        <TextBlock x:Name="HmCpuVal" Text="—" FontFamily="Consolas" FontSize="24" FontWeight="Bold" Margin="0,4,0,6"/>
-                                        <Border x:Name="HmCpuTrack" Height="3" CornerRadius="2">
-                                            <Border x:Name="HmCpuBar" Height="3" CornerRadius="2" HorizontalAlignment="Left" Width="0"/>
-                                        </Border>
-                                    </StackPanel>
-                                </Border>
-                                <Border x:Name="HmRamCard" Grid.Column="2" BorderThickness="1" CornerRadius="4" Padding="14">
-                                    <StackPanel>
-                                        <TextBlock x:Name="HmRamLbl" Text="RAM" FontFamily="Consolas" FontSize="11"/>
-                                        <TextBlock x:Name="HmRamVal" Text="—" FontFamily="Consolas" FontSize="24" FontWeight="Bold" Margin="0,4,0,6"/>
-                                        <Border x:Name="HmRamTrack" Height="3" CornerRadius="2">
-                                            <Border x:Name="HmRamBar" Height="3" CornerRadius="2" HorizontalAlignment="Left" Width="0"/>
-                                        </Border>
-                                    </StackPanel>
-                                </Border>
-                                <Border x:Name="HmStatusCard" Grid.Column="4" BorderThickness="1" CornerRadius="4" Padding="14">
-                                    <StackPanel>
-                                        <TextBlock x:Name="HmStatusLbl" FontFamily="Consolas" FontSize="11"/>
-                                        <TextBlock x:Name="HmStatusVal" FontFamily="Consolas" FontSize="13" FontWeight="Bold" Margin="0,6,0,0"/>
-                                        <TextBlock x:Name="HmVerVal" FontFamily="Consolas" FontSize="10" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
-                                    </StackPanel>
-                                </Border>
-                            </Grid>
-                            <Border x:Name="HmInfoCard" BorderThickness="1" CornerRadius="4">
-                                <StackPanel>
-                                    <TextBlock x:Name="HmInfoTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
-                                    <Border x:Name="HmInfoSep" Height="1"/>
-                                    <StackPanel Margin="14,10">
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="HmPathLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="HmPathVal" FontFamily="Consolas" FontSize="10" TextTrimming="CharacterEllipsis"/></DockPanel>
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="HmInstLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="HmInstVal" FontFamily="Consolas" FontSize="11" TextTrimming="CharacterEllipsis"/></DockPanel>
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="HmLatestLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="HmLatestVal" FontFamily="Consolas" FontSize="11" TextTrimming="CharacterEllipsis"/></DockPanel>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="14,0,14,14">
-                                        <Button x:Name="BtnGoInstall" Click="BtnGoInstall_Click" Padding="16,9" BorderThickness="1" FontFamily="Consolas" FontSize="12" Margin="0,0,8,0"/>
-                                        <Button x:Name="BtnGoLaunch" Click="BtnGoLaunch_Click" Padding="14,9" BorderThickness="1" FontFamily="Consolas" FontSize="12"/>
-                                    </StackPanel>
+                    <!-- ═══ HOME ═══ -->
+                    <StackPanel x:Name="PgHome">
+                        <Border x:Name="HeroBanner" CornerRadius="16" BorderThickness="1" Padding="30,26" Margin="0,0,0,22">
+                            <DockPanel>
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Button x:Name="BtnGoInstall" Click="BtnGoInstall_Click" Padding="18,11" BorderThickness="1" FontSize="13" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                                    <Button x:Name="BtnGoLaunch" Click="BtnGoLaunch_Click" Padding="22,11" BorderThickness="1" FontSize="13" FontWeight="SemiBold"/>
                                 </StackPanel>
-                            </Border>
-                        </StackPanel>
-
-                        <!-- ═══ INSTALL ═══ -->
-                        <StackPanel x:Name="PgInstall" Visibility="Collapsed">
-                            <DockPanel Margin="0,0,0,16">
-                                <Button x:Name="BtnCheckVer" Click="BtnCheckVer_Click" DockPanel.Dock="Right" Padding="12,6" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
-                                <TextBlock x:Name="TxtInstallTitle" FontFamily="Consolas" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock x:Name="HeroGreeting" FontSize="28" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="HeroSub" FontSize="14" Margin="0,6,0,0"/>
+                                </StackPanel>
                             </DockPanel>
-                            <Border x:Name="InstStatusCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12">
-                                <StackPanel>
-                                    <TextBlock x:Name="InstStatusTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
-                                    <Border x:Name="InstStatusSep" Height="1"/>
-                                    <StackPanel Margin="14,10">
-                                        <DockPanel Margin="0,5">
-                                            <TextBlock x:Name="InstFolderLbl" FontFamily="Consolas" FontSize="11" Width="100"/>
-                                            <Button x:Name="BtnChangeDir" Click="BtnChangeDir_Click" DockPanel.Dock="Right" Padding="8,3" BorderThickness="1" FontFamily="Consolas" FontSize="10"/>
-                                            <TextBlock x:Name="InstDirVal" FontFamily="Consolas" FontSize="10" TextTrimming="CharacterEllipsis" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                        </DockPanel>
-                                        <DockPanel Margin="0,5"><TextBlock x:Name="InstStatusLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="InstStatusVal" FontFamily="Consolas" FontSize="11"/></DockPanel>
-                                        <DockPanel Margin="0,5"><TextBlock x:Name="InstCurLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="InstCurVal" FontFamily="Consolas" FontSize="11" TextTrimming="CharacterEllipsis"/></DockPanel>
-                                        <DockPanel Margin="0,5"><TextBlock x:Name="InstLatLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="InstLatVal" FontFamily="Consolas" FontSize="11" TextTrimming="CharacterEllipsis"/></DockPanel>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-                            <Border x:Name="InstActionCard" BorderThickness="1" CornerRadius="4">
-                                <StackPanel>
-                                    <TextBlock x:Name="InstActionTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
-                                    <Border x:Name="InstActionSep" Height="1"/>
-                                    <StackPanel Margin="14,12">
-                                        <TextBlock x:Name="InstDesc" FontFamily="Consolas" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,12"/>
-                                        <Button x:Name="BtnDoInstall" Click="BtnDoInstall_Click" Padding="18,10" BorderThickness="1" FontFamily="Consolas" FontSize="12" HorizontalAlignment="Left"/>
-                                        <StackPanel x:Name="ProgressArea" Visibility="Collapsed" Margin="0,12,0,0">
-                                            <DockPanel Margin="0,0,0,4">
-                                                <TextBlock x:Name="ProgressPct" DockPanel.Dock="Right" FontFamily="Consolas" FontSize="11"/>
-                                                <TextBlock x:Name="ProgressMsg" FontFamily="Consolas" FontSize="11"/>
-                                            </DockPanel>
-                                            <Border x:Name="ProgressTrack" Height="6" CornerRadius="3">
-                                                <Border x:Name="ProgFill" Height="6" CornerRadius="3" HorizontalAlignment="Left" Width="0"/>
+                        </Border>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="18"/>
+                                <ColumnDefinition Width="320"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock x:Name="TxtHomeTitle" FontSize="16" FontWeight="SemiBold" Margin="2,0,0,12"/>
+                                <Grid Margin="0,0,0,16">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/><ColumnDefinition Width="12"/><ColumnDefinition/><ColumnDefinition Width="12"/><ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border x:Name="HmCpuCard" Grid.Column="0" BorderThickness="1" CornerRadius="12" Padding="18">
+                                        <StackPanel>
+                                            <TextBlock x:Name="HmCpuLbl" Text="CPU" FontSize="12"/>
+                                            <TextBlock x:Name="HmCpuVal" Text="—" FontSize="28" FontWeight="SemiBold" Margin="0,4,0,10"/>
+                                            <Border x:Name="HmCpuTrack" Height="4" CornerRadius="2">
+                                                <Border x:Name="HmCpuBar" Height="4" CornerRadius="2" HorizontalAlignment="Left" Width="0"/>
                                             </Border>
                                         </StackPanel>
-                                        <Border x:Name="InstLogArea" Visibility="Collapsed" Margin="0,12,0,0" BorderThickness="1" CornerRadius="3" Padding="10">
+                                    </Border>
+                                    <Border x:Name="HmRamCard" Grid.Column="2" BorderThickness="1" CornerRadius="12" Padding="18">
+                                        <StackPanel>
+                                            <TextBlock x:Name="HmRamLbl" Text="RAM" FontSize="12"/>
+                                            <TextBlock x:Name="HmRamVal" Text="—" FontSize="28" FontWeight="SemiBold" Margin="0,4,0,10"/>
+                                            <Border x:Name="HmRamTrack" Height="4" CornerRadius="2">
+                                                <Border x:Name="HmRamBar" Height="4" CornerRadius="2" HorizontalAlignment="Left" Width="0"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border x:Name="HmStatusCard" Grid.Column="4" BorderThickness="1" CornerRadius="12" Padding="18">
+                                        <StackPanel>
+                                            <TextBlock x:Name="HmStatusLbl" FontSize="12"/>
+                                            <TextBlock x:Name="HmStatusVal" FontSize="16" FontWeight="SemiBold" Margin="0,10,0,0"/>
+                                            <TextBlock x:Name="HmVerVal" FontFamily="Consolas" FontSize="11" Margin="0,4,0,0" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+
+                                <Border x:Name="HmInfoCard" BorderThickness="1" CornerRadius="12">
+                                    <StackPanel>
+                                        <TextBlock x:Name="HmInfoTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
+                                        <Border x:Name="HmInfoSep" Height="1"/>
+                                        <StackPanel Margin="18,12">
+                                            <DockPanel Margin="0,5"><TextBlock x:Name="HmPathLbl" FontSize="12" Width="120"/><TextBlock x:Name="HmPathVal" FontFamily="Consolas" FontSize="11" TextTrimming="CharacterEllipsis"/></DockPanel>
+                                            <DockPanel Margin="0,5"><TextBlock x:Name="HmInstLbl" FontSize="12" Width="120"/><TextBlock x:Name="HmInstVal" FontSize="12" TextTrimming="CharacterEllipsis"/></DockPanel>
+                                            <DockPanel Margin="0,5"><TextBlock x:Name="HmLatestLbl" FontSize="12" Width="120"/><TextBlock x:Name="HmLatestVal" FontSize="12" TextTrimming="CharacterEllipsis"/></DockPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Margin="0,30,0,0">
+                                <Border x:Name="HmNewsCard" BorderThickness="1" CornerRadius="12">
+                                    <StackPanel>
+                                        <TextBlock x:Name="HmNewsTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
+                                        <Border x:Name="HmNewsSep" Height="1"/>
+                                        <StackPanel Margin="18,14,18,6">
+                                            <StackPanel Margin="0,0,0,14"><TextBlock x:Name="HmNewV1" FontSize="11" FontWeight="SemiBold"/><TextBlock x:Name="HmNewT1" FontSize="12" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel>
+                                            <StackPanel Margin="0,0,0,14"><TextBlock x:Name="HmNewV2" FontSize="11" FontWeight="SemiBold"/><TextBlock x:Name="HmNewT2" FontSize="12" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel>
+                                            <StackPanel Margin="0,0,0,14"><TextBlock x:Name="HmNewV3" FontSize="11" FontWeight="SemiBold"/><TextBlock x:Name="HmNewT3" FontSize="12" TextWrapping="Wrap" Margin="0,3,0,0"/></StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- ═══ INSTALL ═══ -->
+                        <StackPanel x:Name="PgInstall" Visibility="Collapsed">
+                            <DockPanel Margin="0,0,0,16">
+                                <Button x:Name="BtnCheckVer" Click="BtnCheckVer_Click" DockPanel.Dock="Right" Padding="12,6" BorderThickness="1" FontFamily="Segoe UI" FontSize="12"/>
+                                <TextBlock x:Name="TxtInstallTitle" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </DockPanel>
+                            <Border x:Name="InstStatusCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <TextBlock x:Name="InstStatusTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
+                                    <Border x:Name="InstStatusSep" Height="1"/>
+                                    <StackPanel Margin="18,12">
+                                        <DockPanel Margin="0,5">
+                                            <TextBlock x:Name="InstFolderLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/>
+                                            <Button x:Name="BtnChangeDir" Click="BtnChangeDir_Click" DockPanel.Dock="Right" Padding="8,3" BorderThickness="1" FontFamily="Segoe UI" FontSize="11"/>
+                                            <TextBlock x:Name="InstDirVal" FontFamily="Consolas" FontSize="11" TextTrimming="CharacterEllipsis" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                        </DockPanel>
+                                        <DockPanel Margin="0,5"><TextBlock x:Name="InstStatusLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="InstStatusVal" FontFamily="Segoe UI" FontSize="12"/></DockPanel>
+                                        <DockPanel Margin="0,5"><TextBlock x:Name="InstCurLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="InstCurVal" FontFamily="Segoe UI" FontSize="12" TextTrimming="CharacterEllipsis"/></DockPanel>
+                                        <DockPanel Margin="0,5"><TextBlock x:Name="InstLatLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="InstLatVal" FontFamily="Segoe UI" FontSize="12" TextTrimming="CharacterEllipsis"/></DockPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            <Border x:Name="InstActionCard" BorderThickness="1" CornerRadius="12">
+                                <StackPanel>
+                                    <TextBlock x:Name="InstActionTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
+                                    <Border x:Name="InstActionSep" Height="1"/>
+                                    <StackPanel Margin="18,14">
+                                        <TextBlock x:Name="InstDesc" FontFamily="Segoe UI" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                                        <Button x:Name="BtnDoInstall" Click="BtnDoInstall_Click" Padding="18,10" BorderThickness="1" FontFamily="Segoe UI" FontSize="13" HorizontalAlignment="Left"/>
+                                        <StackPanel x:Name="ProgressArea" Visibility="Collapsed" Margin="0,12,0,0">
+                                            <DockPanel Margin="0,0,0,4">
+                                                <TextBlock x:Name="ProgressPct" DockPanel.Dock="Right" FontFamily="Segoe UI" FontSize="12"/>
+                                                <TextBlock x:Name="ProgressMsg" FontFamily="Segoe UI" FontSize="12"/>
+                                            </DockPanel>
+                                            <Border x:Name="ProgressTrack" Height="6" CornerRadius="8">
+                                                <Border x:Name="ProgFill" Height="6" CornerRadius="8" HorizontalAlignment="Left" Width="0"/>
+                                            </Border>
+                                        </StackPanel>
+                                        <Border x:Name="InstLogArea" Visibility="Collapsed" Margin="0,12,0,0" BorderThickness="1" CornerRadius="8" Padding="10">
                                             <ScrollViewer x:Name="InstLogScroll" Height="120" VerticalScrollBarVisibility="Auto">
-                                                <TextBlock x:Name="InstLogText" FontFamily="Consolas" FontSize="11" TextWrapping="Wrap"/>
+                                                <TextBlock x:Name="InstLogText" FontFamily="Consolas" FontSize="12" TextWrapping="Wrap"/>
                                             </ScrollViewer>
                                         </Border>
                                     </StackPanel>
@@ -209,30 +364,30 @@
 
                         <!-- ═══ LAUNCH ═══ -->
                         <StackPanel x:Name="PgLaunch" Visibility="Collapsed">
-                            <TextBlock x:Name="TxtLaunchTitle" FontFamily="Consolas" FontSize="14" FontWeight="Bold" Margin="0,0,0,16"/>
-                            <Border x:Name="LaunchOptCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12">
+                            <TextBlock x:Name="TxtLaunchTitle" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                            <Border x:Name="LaunchOptCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
                                 <StackPanel>
-                                    <TextBlock x:Name="LaunchOptTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <TextBlock x:Name="LaunchOptTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     <Border x:Name="LaunchOptSep" Height="1"/>
-                                    <StackPanel Margin="14,12">
-                                        <CheckBox x:Name="ChkFlushDns" FontFamily="Consolas" FontSize="12" IsChecked="True" Margin="0,0,0,8" Click="LaunchOpt_Click"/>
-                                        <CheckBox x:Name="ChkPowerMode" FontFamily="Consolas" FontSize="12" IsChecked="True" Margin="0,0,0,14" Click="LaunchOpt_Click"/>
-                                        <TextBlock x:Name="TxtLaunchPath" FontFamily="Consolas" FontSize="10" TextWrapping="Wrap" Margin="0,0,0,8"/>
-                                        <TextBlock x:Name="TxtRbRunning" FontFamily="Consolas" FontSize="11" Margin="0,0,0,14"/>
-                                        <Button x:Name="BtnDoLaunch" Click="BtnDoLaunch_Click" Padding="20,10" BorderThickness="1" FontFamily="Consolas" FontSize="13" HorizontalAlignment="Left"/>
+                                    <StackPanel Margin="18,14">
+                                        <CheckBox x:Name="ChkFlushDns" FontFamily="Segoe UI" FontSize="13" IsChecked="True" Margin="0,0,0,8" Click="LaunchOpt_Click"/>
+                                        <CheckBox x:Name="ChkPowerMode" FontFamily="Segoe UI" FontSize="13" IsChecked="True" Margin="0,0,0,14" Click="LaunchOpt_Click"/>
+                                        <TextBlock x:Name="TxtLaunchPath" FontFamily="Segoe UI" FontSize="11" TextWrapping="Wrap" Margin="0,0,0,8"/>
+                                        <TextBlock x:Name="TxtRbRunning" FontFamily="Segoe UI" FontSize="12" Margin="0,0,0,14"/>
+                                        <Button x:Name="BtnDoLaunch" Click="BtnDoLaunch_Click" Padding="20,10" BorderThickness="1" FontFamily="Segoe UI" FontSize="13" HorizontalAlignment="Left"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
-                            <Border x:Name="LaunchLogCard" BorderThickness="1" CornerRadius="4">
+                            <Border x:Name="LaunchLogCard" BorderThickness="1" CornerRadius="12">
                                 <StackPanel>
-                                    <TextBlock x:Name="LaunchLogTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <TextBlock x:Name="LaunchLogTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     <Border x:Name="LaunchLogSep" Height="1"/>
-                                    <Border x:Name="LaunchLogBox" Margin="14,10" BorderThickness="1" CornerRadius="3" Padding="10">
+                                    <Border x:Name="LaunchLogBox" Margin="18,12" BorderThickness="1" CornerRadius="8" Padding="10">
                                         <ScrollViewer x:Name="LaunchLogScroll" Height="120" VerticalScrollBarVisibility="Auto">
-                                            <TextBlock x:Name="LaunchLogText" FontFamily="Consolas" FontSize="11" TextWrapping="Wrap"/>
+                                            <TextBlock x:Name="LaunchLogText" FontFamily="Consolas" FontSize="12" TextWrapping="Wrap"/>
                                         </ScrollViewer>
                                     </Border>
-                                    <Button x:Name="BtnClearLog" Click="BtnClearLog_Click" Padding="10,4" BorderThickness="1" FontFamily="Consolas" FontSize="10" HorizontalAlignment="Left" Margin="14,0,0,12"/>
+                                    <Button x:Name="BtnClearLog" Click="BtnClearLog_Click" Padding="10,4" BorderThickness="1" FontFamily="Segoe UI" FontSize="11" HorizontalAlignment="Left" Margin="14,0,0,12"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -240,21 +395,21 @@
                         <!-- ═══ STATUS ═══ -->
                         <StackPanel x:Name="PgStatus" Visibility="Collapsed">
                             <DockPanel Margin="0,0,0,16">
-                                <Button x:Name="BtnRefreshStatus" Click="BtnRefreshStatus_Click" DockPanel.Dock="Right" Padding="12,6" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
-                                <TextBlock x:Name="TxtStatusTitle" FontFamily="Consolas" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <Button x:Name="BtnRefreshStatus" Click="BtnRefreshStatus_Click" DockPanel.Dock="Right" Padding="12,6" BorderThickness="1" FontFamily="Segoe UI" FontSize="12"/>
+                                <TextBlock x:Name="TxtStatusTitle" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </DockPanel>
-                            <Border x:Name="StatusOvCard" BorderThickness="1" CornerRadius="4" Padding="14,12" Margin="0,0,0,12">
+                            <Border x:Name="StatusOvCard" BorderThickness="1" CornerRadius="12" Padding="18,14" Margin="0,0,0,12">
                                 <DockPanel>
                                     <Ellipse x:Name="StatusOvDot" Width="10" Height="10" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                    <TextBlock x:Name="StatusTs" DockPanel.Dock="Right" FontFamily="Consolas" FontSize="10" VerticalAlignment="Center"/>
-                                    <TextBlock x:Name="StatusOvText" FontFamily="Consolas" FontSize="13" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="StatusTs" DockPanel.Dock="Right" FontFamily="Segoe UI" FontSize="11" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="StatusOvText" FontFamily="Segoe UI" FontSize="13" VerticalAlignment="Center"/>
                                 </DockPanel>
                             </Border>
-                            <Border x:Name="StatusSvcCard" BorderThickness="1" CornerRadius="4">
+                            <Border x:Name="StatusSvcCard" BorderThickness="1" CornerRadius="12">
                                 <StackPanel>
-                                    <TextBlock x:Name="StatusSvcTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <TextBlock x:Name="StatusSvcTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     <Border x:Name="StatusSvcSep" Height="1"/>
-                                    <UniformGrid x:Name="SvcGrid" Columns="2" Margin="14,10"/>
+                                    <UniformGrid x:Name="SvcGrid" Columns="2" Margin="18,12"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -262,62 +417,62 @@
                         <!-- ═══ SERVER ═══ -->
                         <StackPanel x:Name="PgServer" Visibility="Collapsed">
                             <DockPanel Margin="0,0,0,16">
-                                <Button x:Name="BtnRefreshServer" Click="BtnRefreshServer_Click" DockPanel.Dock="Right" Padding="12,6" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
-                                <TextBlock x:Name="TxtServerTitle" FontFamily="Consolas" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <Button x:Name="BtnRefreshServer" Click="BtnRefreshServer_Click" DockPanel.Dock="Right" Padding="12,6" BorderThickness="1" FontFamily="Segoe UI" FontSize="12"/>
+                                <TextBlock x:Name="TxtServerTitle" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </DockPanel>
-                            <Border x:Name="SrvMsgCard" BorderThickness="1" CornerRadius="4" Padding="14,10" Margin="0,0,0,12">
-                                <TextBlock x:Name="SrvMsg" FontFamily="Consolas" FontSize="12" TextWrapping="Wrap"/>
+                            <Border x:Name="SrvMsgCard" BorderThickness="1" CornerRadius="12" Padding="18,12" Margin="0,0,0,12">
+                                <TextBlock x:Name="SrvMsg" FontFamily="Segoe UI" FontSize="13" TextWrapping="Wrap"/>
                             </Border>
-                            <Border x:Name="SrvGameCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12" Visibility="Collapsed">
+                            <Border x:Name="SrvGameCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12" Visibility="Collapsed">
                                 <StackPanel>
-                                    <TextBlock x:Name="SrvGameTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <TextBlock x:Name="SrvGameTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     <Border x:Name="SrvGameSep" Height="1"/>
-                                    <StackPanel Margin="14,10">
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvGameNameLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="SrvGameNameVal" FontFamily="Consolas" FontSize="13" FontWeight="Bold" TextTrimming="CharacterEllipsis"/></DockPanel>
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvPlaceIdLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="SrvPlaceIdVal" FontFamily="Consolas" FontSize="11"/></DockPanel>
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvJobIdLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="SrvJobIdVal" FontFamily="Consolas" FontSize="10" TextTrimming="CharacterEllipsis"/></DockPanel>
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvIpLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="SrvIpVal" FontFamily="Consolas" FontSize="12" FontWeight="Bold"/></DockPanel>
+                                    <StackPanel Margin="18,12">
+                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvGameNameLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="SrvGameNameVal" FontFamily="Segoe UI" FontSize="13" FontWeight="Bold" TextTrimming="CharacterEllipsis"/></DockPanel>
+                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvPlaceIdLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="SrvPlaceIdVal" FontFamily="Consolas" FontSize="12"/></DockPanel>
+                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvJobIdLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="SrvJobIdVal" FontFamily="Consolas" FontSize="11" TextTrimming="CharacterEllipsis"/></DockPanel>
+                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvIpLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="SrvIpVal" FontFamily="Consolas" FontSize="13" FontWeight="Bold"/></DockPanel>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
-                            <Border x:Name="SrvGeoCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12" Visibility="Collapsed">
+                            <Border x:Name="SrvGeoCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12" Visibility="Collapsed">
                                 <StackPanel>
-                                    <TextBlock x:Name="SrvGeoTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <TextBlock x:Name="SrvGeoTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     <Border x:Name="SrvGeoSep" Height="1"/>
-                                    <StackPanel Margin="14,10">
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvCountryLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="SrvCountryVal" FontFamily="Consolas" FontSize="11"/></DockPanel>
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvRegionLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="SrvRegionVal" FontFamily="Consolas" FontSize="11"/></DockPanel>
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvCityLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="SrvCityVal" FontFamily="Consolas" FontSize="11"/></DockPanel>
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvTzLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="SrvTzVal" FontFamily="Consolas" FontSize="11"/></DockPanel>
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvIspLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="SrvIspVal" FontFamily="Consolas" FontSize="11" TextTrimming="CharacterEllipsis"/></DockPanel>
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvCoordLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="SrvCoordVal" FontFamily="Consolas" FontSize="11"/></DockPanel>
-                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvAsLbl" FontFamily="Consolas" FontSize="11" Width="100"/><TextBlock x:Name="SrvAsVal" FontFamily="Consolas" FontSize="10" TextTrimming="CharacterEllipsis"/></DockPanel>
+                                    <StackPanel Margin="18,12">
+                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvCountryLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="SrvCountryVal" FontFamily="Segoe UI" FontSize="12"/></DockPanel>
+                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvRegionLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="SrvRegionVal" FontFamily="Segoe UI" FontSize="12"/></DockPanel>
+                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvCityLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="SrvCityVal" FontFamily="Segoe UI" FontSize="12"/></DockPanel>
+                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvTzLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="SrvTzVal" FontFamily="Segoe UI" FontSize="12"/></DockPanel>
+                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvIspLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="SrvIspVal" FontFamily="Segoe UI" FontSize="12" TextTrimming="CharacterEllipsis"/></DockPanel>
+                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvCoordLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="SrvCoordVal" FontFamily="Segoe UI" FontSize="12"/></DockPanel>
+                                        <DockPanel Margin="0,4"><TextBlock x:Name="SrvAsLbl" FontFamily="Segoe UI" FontSize="12" Width="120"/><TextBlock x:Name="SrvAsVal" FontFamily="Consolas" FontSize="11" TextTrimming="CharacterEllipsis"/></DockPanel>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
-                            <Border x:Name="SrvManualCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12">
+                            <Border x:Name="SrvManualCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
                                 <StackPanel>
-                                    <TextBlock x:Name="SrvManualTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <TextBlock x:Name="SrvManualTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     <Border x:Name="SrvManualSep" Height="1"/>
-                                    <StackPanel Margin="14,12">
+                                    <StackPanel Margin="18,14">
                                         <DockPanel Margin="0,0,0,12">
-                                            <Button x:Name="BtnIpLookup" Click="BtnIpLookup_Click" DockPanel.Dock="Right" Padding="12,7" BorderThickness="1" FontFamily="Consolas" FontSize="11" Margin="8,0,0,0"/>
-                                            <TextBox x:Name="InputIp" FontFamily="Consolas" FontSize="12" Padding="8,7" BorderThickness="1" KeyDown="InputIp_KeyDown"/>
+                                            <Button x:Name="BtnIpLookup" Click="BtnIpLookup_Click" DockPanel.Dock="Right" Padding="12,7" BorderThickness="1" FontFamily="Segoe UI" FontSize="12" Margin="8,0,0,0"/>
+                                            <TextBox x:Name="InputIp" FontFamily="Consolas" FontSize="13" Padding="8,7" BorderThickness="1" KeyDown="InputIp_KeyDown"/>
                                         </DockPanel>
-                                        <Border x:Name="IpResultArea" Visibility="Collapsed" BorderThickness="1" CornerRadius="3" Padding="10">
+                                        <Border x:Name="IpResultArea" Visibility="Collapsed" BorderThickness="1" CornerRadius="8" Padding="10">
                                             <StackPanel x:Name="IpResultPanel"/>
                                         </Border>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
-                            <Border x:Name="SrvPingCard" BorderThickness="1" CornerRadius="4">
+                            <Border x:Name="SrvPingCard" BorderThickness="1" CornerRadius="12">
                                 <StackPanel>
                                     <DockPanel>
-                                        <Button x:Name="BtnPing" Click="BtnPing_Click" DockPanel.Dock="Right" Padding="10,4" BorderThickness="1" FontFamily="Consolas" FontSize="10" VerticalAlignment="Center" Margin="0,0,14,0"/>
-                                        <TextBlock x:Name="SrvPingTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                        <Button x:Name="BtnPing" Click="BtnPing_Click" DockPanel.Dock="Right" Padding="10,4" BorderThickness="1" FontFamily="Segoe UI" FontSize="11" VerticalAlignment="Center" Margin="0,0,14,0"/>
+                                        <TextBlock x:Name="SrvPingTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     </DockPanel>
                                     <Border x:Name="SrvPingSep" Height="1"/>
-                                    <StackPanel x:Name="PingPanel" Margin="14,10"/>
+                                    <StackPanel x:Name="PingPanel" Margin="18,12"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -325,124 +480,124 @@
                         <!-- ═══ AI CHAT ═══ -->
                         <StackPanel x:Name="PgChat" Visibility="Collapsed">
                             <DockPanel Margin="0,0,0,16">
-                                <Button x:Name="BtnChatClear" Click="BtnChatClear_Click" DockPanel.Dock="Right" Padding="12,6" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
-                                <TextBlock x:Name="TxtChatTitle" FontFamily="Consolas" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <Button x:Name="BtnChatClear" Click="BtnChatClear_Click" DockPanel.Dock="Right" Padding="12,6" BorderThickness="1" FontFamily="Segoe UI" FontSize="12"/>
+                                <TextBlock x:Name="TxtChatTitle" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center"/>
                             </DockPanel>
 
-                            <Border x:Name="ChatCfgCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12">
+                            <Border x:Name="ChatCfgCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
                                 <StackPanel>
-                                    <TextBlock x:Name="ChatCfgTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <TextBlock x:Name="ChatCfgTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     <Border x:Name="ChatCfgSep" Height="1"/>
-                                    <StackPanel Margin="14,12">
-                                        <TextBlock x:Name="ChatProviderLbl" FontFamily="Consolas" FontSize="11" Margin="0,0,0,6"/>
+                                    <StackPanel Margin="18,14">
+                                        <TextBlock x:Name="ChatProviderLbl" FontFamily="Segoe UI" FontSize="12" Margin="0,0,0,6"/>
                                         <WrapPanel Margin="0,0,0,8">
-                                            <Button x:Name="BtnProvAnthropic" Tag="Anthropic" Content="Claude (Anthropic)" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
-                                            <Button x:Name="BtnProvOpenAI" Tag="OpenAI" Content="OpenAI" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
-                                            <Button x:Name="BtnProvGemini" Tag="Gemini" Content="Google Gemini" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
-                                            <Button x:Name="BtnProvCustom" Tag="Custom" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Consolas" FontSize="11"/>
+                                            <Button x:Name="BtnProvAnthropic" Tag="Anthropic" Content="Claude (Anthropic)" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Segoe UI" FontSize="12"/>
+                                            <Button x:Name="BtnProvOpenAI" Tag="OpenAI" Content="OpenAI" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Segoe UI" FontSize="12"/>
+                                            <Button x:Name="BtnProvGemini" Tag="Gemini" Content="Google Gemini" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Segoe UI" FontSize="12"/>
+                                            <Button x:Name="BtnProvCustom" Tag="Custom" Click="Provider_Click" Padding="12,6" Margin="0,0,8,8" BorderThickness="1" FontFamily="Segoe UI" FontSize="12"/>
                                         </WrapPanel>
                                         <StackPanel x:Name="ChatBaseUrlPanel" Margin="0,0,0,10">
-                                            <TextBlock x:Name="ChatBaseUrlLbl" FontFamily="Consolas" FontSize="11" Margin="0,0,0,6"/>
-                                            <TextBox x:Name="ChatBaseUrlBox" FontFamily="Consolas" FontSize="12" Padding="8,7" BorderThickness="1" LostFocus="ChatBaseUrlBox_LostFocus"/>
+                                            <TextBlock x:Name="ChatBaseUrlLbl" FontFamily="Segoe UI" FontSize="12" Margin="0,0,0,6"/>
+                                            <TextBox x:Name="ChatBaseUrlBox" FontFamily="Consolas" FontSize="13" Padding="8,7" BorderThickness="1" LostFocus="ChatBaseUrlBox_LostFocus"/>
                                         </StackPanel>
-                                        <TextBlock x:Name="ChatApiKeyLbl" FontFamily="Consolas" FontSize="11" Margin="0,0,0,6"/>
+                                        <TextBlock x:Name="ChatApiKeyLbl" FontFamily="Segoe UI" FontSize="12" Margin="0,0,0,6"/>
                                         <DockPanel>
-                                            <Button x:Name="BtnChatSaveKey" Click="BtnChatSaveKey_Click" DockPanel.Dock="Right" Padding="12,7" BorderThickness="1" FontFamily="Consolas" FontSize="11" Margin="8,0,0,0"/>
-                                            <PasswordBox x:Name="ChatKeyBox" FontFamily="Consolas" FontSize="12" Padding="8,7" BorderThickness="1"/>
+                                            <Button x:Name="BtnChatSaveKey" Click="BtnChatSaveKey_Click" DockPanel.Dock="Right" Padding="12,7" BorderThickness="1" FontFamily="Segoe UI" FontSize="12" Margin="8,0,0,0"/>
+                                            <PasswordBox x:Name="ChatKeyBox" FontFamily="Consolas" FontSize="13" Padding="8,7" BorderThickness="1"/>
                                         </DockPanel>
-                                        <TextBlock x:Name="ChatKeyStatus" FontFamily="Consolas" FontSize="10" Margin="0,6,0,0"/>
-                                        <TextBlock x:Name="ChatKeyNote" FontFamily="Consolas" FontSize="9" TextWrapping="Wrap" Margin="0,2,0,12"/>
-                                        <TextBlock x:Name="ChatModelLbl" FontFamily="Consolas" FontSize="11" Margin="0,0,0,6"/>
+                                        <TextBlock x:Name="ChatKeyStatus" FontFamily="Segoe UI" FontSize="11" Margin="0,6,0,0"/>
+                                        <TextBlock x:Name="ChatKeyNote" FontFamily="Segoe UI" FontSize="10" TextWrapping="Wrap" Margin="0,2,0,12"/>
+                                        <TextBlock x:Name="ChatModelLbl" FontFamily="Segoe UI" FontSize="12" Margin="0,0,0,6"/>
                                         <DockPanel>
-                                            <Button x:Name="BtnChatFetch" Click="BtnChatFetch_Click" DockPanel.Dock="Right" Padding="12,7" BorderThickness="1" FontFamily="Consolas" FontSize="11" Margin="8,0,0,0"/>
-                                            <TextBox x:Name="ChatModelBox" FontFamily="Consolas" FontSize="12" Padding="8,7" BorderThickness="1" LostFocus="ChatModelBox_LostFocus"/>
+                                            <Button x:Name="BtnChatFetch" Click="BtnChatFetch_Click" DockPanel.Dock="Right" Padding="12,7" BorderThickness="1" FontFamily="Segoe UI" FontSize="12" Margin="8,0,0,0"/>
+                                            <TextBox x:Name="ChatModelBox" FontFamily="Consolas" FontSize="13" Padding="8,7" BorderThickness="1" LostFocus="ChatModelBox_LostFocus"/>
                                         </DockPanel>
                                         <WrapPanel x:Name="ChatModelChips" Margin="0,8,0,0"/>
-                                        <TextBlock x:Name="ChatModelStatus" FontFamily="Consolas" FontSize="10" TextWrapping="Wrap"/>
+                                        <TextBlock x:Name="ChatModelStatus" FontFamily="Segoe UI" FontSize="11" TextWrapping="Wrap"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
 
-                            <Border x:Name="ChatLogCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12">
+                            <Border x:Name="ChatLogCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
                                 <ScrollViewer x:Name="ChatScroll" Height="320" VerticalScrollBarVisibility="Auto">
                                     <StackPanel x:Name="ChatMessages" Margin="12"/>
                                 </ScrollViewer>
                             </Border>
 
                             <DockPanel>
-                                <Button x:Name="BtnChatSend" Click="BtnChatSend_Click" DockPanel.Dock="Right" Padding="20,10" BorderThickness="1" FontFamily="Consolas" FontSize="12" Margin="8,0,0,0"/>
-                                <TextBox x:Name="ChatInput" FontFamily="Consolas" FontSize="12" Padding="8,10" BorderThickness="1" KeyDown="ChatInput_KeyDown"/>
+                                <Button x:Name="BtnChatSend" Click="BtnChatSend_Click" DockPanel.Dock="Right" Padding="20,10" BorderThickness="1" FontFamily="Segoe UI" FontSize="13" Margin="8,0,0,0"/>
+                                <TextBox x:Name="ChatInput" FontFamily="Segoe UI" FontSize="13" Padding="8,10" BorderThickness="1" KeyDown="ChatInput_KeyDown"/>
                             </DockPanel>
-                            <TextBlock x:Name="ChatHint" FontFamily="Consolas" FontSize="10" TextWrapping="Wrap" Margin="0,8,0,0"/>
+                            <TextBlock x:Name="ChatHint" FontFamily="Segoe UI" FontSize="11" TextWrapping="Wrap" Margin="0,8,0,0"/>
                         </StackPanel>
 
                         <!-- ═══ SETTINGS ═══ -->
                         <StackPanel x:Name="PgSettings" Visibility="Collapsed">
-                            <TextBlock x:Name="TxtSettingsTitle" FontFamily="Consolas" FontSize="14" FontWeight="Bold" Margin="0,0,0,16"/>
+                            <TextBlock x:Name="TxtSettingsTitle" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,16"/>
 
-                            <Border x:Name="StgInstCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12">
+                            <Border x:Name="StgInstCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
                                 <StackPanel>
-                                    <TextBlock x:Name="StgInstTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <TextBlock x:Name="StgInstTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     <Border x:Name="StgInstSep" Height="1"/>
-                                    <StackPanel Margin="14,12">
-                                        <TextBlock x:Name="StgDirLbl" FontFamily="Consolas" FontSize="11" Margin="0,0,0,8"/>
+                                    <StackPanel Margin="18,14">
+                                        <TextBlock x:Name="StgDirLbl" FontFamily="Segoe UI" FontSize="12" Margin="0,0,0,8"/>
                                         <DockPanel>
-                                            <Button x:Name="BtnChangeDirStg" Click="BtnChangeDir_Click" DockPanel.Dock="Right" Padding="12,8" BorderThickness="1" FontFamily="Consolas" FontSize="11" Margin="8,0,0,0"/>
-                                            <Border x:Name="StgDirBox" BorderThickness="1" CornerRadius="3" Padding="10,7">
-                                                <TextBlock x:Name="StgDirVal" FontFamily="Consolas" FontSize="11" TextTrimming="CharacterEllipsis"/>
+                                            <Button x:Name="BtnChangeDirStg" Click="BtnChangeDir_Click" DockPanel.Dock="Right" Padding="12,8" BorderThickness="1" FontFamily="Segoe UI" FontSize="12" Margin="8,0,0,0"/>
+                                            <Border x:Name="StgDirBox" BorderThickness="1" CornerRadius="8" Padding="10,7">
+                                                <TextBlock x:Name="StgDirVal" FontFamily="Consolas" FontSize="12" TextTrimming="CharacterEllipsis"/>
                                             </Border>
                                         </DockPanel>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
 
-                            <Border x:Name="StgLangCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12">
+                            <Border x:Name="StgLangCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
                                 <StackPanel>
-                                    <TextBlock x:Name="StgLangTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <TextBlock x:Name="StgLangTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     <Border x:Name="StgLangSep" Height="1"/>
-                                    <StackPanel Orientation="Horizontal" Margin="14,12">
-                                        <RadioButton x:Name="RbZh" Content="繁體中文" GroupName="Lang" FontFamily="Consolas" FontSize="12" Margin="0,0,24,0" Click="Lang_Click"/>
-                                        <RadioButton x:Name="RbEn" Content="English" GroupName="Lang" FontFamily="Consolas" FontSize="12" Click="Lang_Click"/>
+                                    <StackPanel Orientation="Horizontal" Margin="18,14">
+                                        <RadioButton x:Name="RbZh" Content="繁體中文" GroupName="Lang" FontFamily="Segoe UI" FontSize="13" Margin="0,0,24,0" Click="Lang_Click"/>
+                                        <RadioButton x:Name="RbEn" Content="English" GroupName="Lang" FontFamily="Segoe UI" FontSize="13" Click="Lang_Click"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
 
-                            <Border x:Name="StgThemeCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12">
+                            <Border x:Name="StgThemeCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
                                 <StackPanel>
-                                    <TextBlock x:Name="StgThemeTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <TextBlock x:Name="StgThemeTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     <Border x:Name="StgThemeSep" Height="1"/>
-                                    <StackPanel Margin="14,12">
-                                        <TextBlock x:Name="StgThemeDesc" FontFamily="Consolas" FontSize="11" Margin="0,0,0,12"/>
+                                    <StackPanel Margin="18,14">
+                                        <TextBlock x:Name="StgThemeDesc" FontFamily="Segoe UI" FontSize="12" Margin="0,0,0,12"/>
                                         <UniformGrid Columns="3">
                                             <!-- 這五張預覽卡的顏色是固定的，換主題時絕對不會被改動 -->
-                                            <Border x:Name="TCardCyber" Tag="Cyber" Margin="4" Padding="12,10" Cursor="Hand" Background="#07101E" BorderBrush="#00D4FF" BorderThickness="1" CornerRadius="4" MouseLeftButtonDown="Theme_Click">
+                                            <Border x:Name="TCardCyber" Tag="Cyber" Margin="4" Padding="12,10" Cursor="Hand" Background="#0F1620" BorderBrush="#22D3EE" BorderThickness="1" CornerRadius="12" MouseLeftButtonDown="Theme_Click">
                                                 <StackPanel IsHitTestVisible="False">
-                                                    <TextBlock Text="CYBER" FontFamily="Consolas" FontSize="11" Foreground="#00D4FF" FontWeight="Bold"/>
-                                                    <TextBlock x:Name="TCardCyberDesc" FontFamily="Consolas" FontSize="9" Foreground="#5A80A0" Margin="0,2,0,0"/>
+                                                    <TextBlock Text="CYBER" FontFamily="Segoe UI" FontSize="12" Foreground="#22D3EE" FontWeight="Bold"/>
+                                                    <TextBlock x:Name="TCardCyberDesc" FontFamily="Segoe UI" FontSize="10" Foreground="#7B8CA3" Margin="0,2,0,0"/>
                                                 </StackPanel>
                                             </Border>
-                                            <Border x:Name="TCardMidnight" Tag="Midnight" Margin="4" Padding="12,10" Cursor="Hand" Background="#080315" BorderBrush="#A855F7" BorderThickness="1" CornerRadius="4" MouseLeftButtonDown="Theme_Click">
+                                            <Border x:Name="TCardMidnight" Tag="Midnight" Margin="4" Padding="12,10" Cursor="Hand" Background="#130D1F" BorderBrush="#A78BFA" BorderThickness="1" CornerRadius="12" MouseLeftButtonDown="Theme_Click">
                                                 <StackPanel IsHitTestVisible="False">
-                                                    <TextBlock Text="MIDNIGHT" FontFamily="Consolas" FontSize="11" Foreground="#A855F7" FontWeight="Bold"/>
-                                                    <TextBlock x:Name="TCardMidnightDesc" FontFamily="Consolas" FontSize="9" Foreground="#7A60A0" Margin="0,2,0,0"/>
+                                                    <TextBlock Text="MIDNIGHT" FontFamily="Segoe UI" FontSize="12" Foreground="#A78BFA" FontWeight="Bold"/>
+                                                    <TextBlock x:Name="TCardMidnightDesc" FontFamily="Segoe UI" FontSize="10" Foreground="#8B7FA8" Margin="0,2,0,0"/>
                                                 </StackPanel>
                                             </Border>
-                                            <Border x:Name="TCardMatrix" Tag="Matrix" Margin="4" Padding="12,10" Cursor="Hand" Background="#011001" BorderBrush="#00FF41" BorderThickness="1" CornerRadius="4" MouseLeftButtonDown="Theme_Click">
+                                            <Border x:Name="TCardMatrix" Tag="Matrix" Margin="4" Padding="12,10" Cursor="Hand" Background="#0C160D" BorderBrush="#22C55E" BorderThickness="1" CornerRadius="12" MouseLeftButtonDown="Theme_Click">
                                                 <StackPanel IsHitTestVisible="False">
-                                                    <TextBlock Text="MATRIX" FontFamily="Consolas" FontSize="11" Foreground="#00FF41" FontWeight="Bold"/>
-                                                    <TextBlock x:Name="TCardMatrixDesc" FontFamily="Consolas" FontSize="9" Foreground="#3E8A48" Margin="0,2,0,0"/>
+                                                    <TextBlock Text="MATRIX" FontFamily="Segoe UI" FontSize="12" Foreground="#22C55E" FontWeight="Bold"/>
+                                                    <TextBlock x:Name="TCardMatrixDesc" FontFamily="Segoe UI" FontSize="10" Foreground="#6FA57B" Margin="0,2,0,0"/>
                                                 </StackPanel>
                                             </Border>
-                                            <Border x:Name="TCardCrimson" Tag="Crimson" Margin="4" Padding="12,10" Cursor="Hand" Background="#150204" BorderBrush="#FF1744" BorderThickness="1" CornerRadius="4" MouseLeftButtonDown="Theme_Click">
+                                            <Border x:Name="TCardCrimson" Tag="Crimson" Margin="4" Padding="12,10" Cursor="Hand" Background="#1A0E12" BorderBrush="#FB7185" BorderThickness="1" CornerRadius="12" MouseLeftButtonDown="Theme_Click">
                                                 <StackPanel IsHitTestVisible="False">
-                                                    <TextBlock Text="CRIMSON" FontFamily="Consolas" FontSize="11" Foreground="#FF1744" FontWeight="Bold"/>
-                                                    <TextBlock x:Name="TCardCrimsonDesc" FontFamily="Consolas" FontSize="9" Foreground="#A06070" Margin="0,2,0,0"/>
+                                                    <TextBlock Text="CRIMSON" FontFamily="Segoe UI" FontSize="12" Foreground="#FB7185" FontWeight="Bold"/>
+                                                    <TextBlock x:Name="TCardCrimsonDesc" FontFamily="Segoe UI" FontSize="10" Foreground="#A87A83" Margin="0,2,0,0"/>
                                                 </StackPanel>
                                             </Border>
-                                            <Border x:Name="TCardArctic" Tag="Arctic" Margin="4" Padding="12,10" Cursor="Hand" Background="#011018" BorderBrush="#60CFFF" BorderThickness="1" CornerRadius="4" MouseLeftButtonDown="Theme_Click">
+                                            <Border x:Name="TCardArctic" Tag="Arctic" Margin="4" Padding="12,10" Cursor="Hand" Background="#0E1A26" BorderBrush="#7DD3FC" BorderThickness="1" CornerRadius="12" MouseLeftButtonDown="Theme_Click">
                                                 <StackPanel IsHitTestVisible="False">
-                                                    <TextBlock Text="ARCTIC" FontFamily="Consolas" FontSize="11" Foreground="#60CFFF" FontWeight="Bold"/>
-                                                    <TextBlock x:Name="TCardArcticDesc" FontFamily="Consolas" FontSize="9" Foreground="#5A8AAA" Margin="0,2,0,0"/>
+                                                    <TextBlock Text="ARCTIC" FontFamily="Segoe UI" FontSize="12" Foreground="#7DD3FC" FontWeight="Bold"/>
+                                                    <TextBlock x:Name="TCardArcticDesc" FontFamily="Segoe UI" FontSize="10" Foreground="#7A9BB5" Margin="0,2,0,0"/>
                                                 </StackPanel>
                                             </Border>
                                         </UniformGrid>
@@ -450,30 +605,47 @@
                                 </StackPanel>
                             </Border>
 
-                            <Border x:Name="StgGenCard" BorderThickness="1" CornerRadius="4" Margin="0,0,0,12">
+                            <Border x:Name="StgGenCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
                                 <StackPanel>
-                                    <TextBlock x:Name="StgGenTitle" FontFamily="Consolas" FontSize="11" Padding="14,10"/>
+                                    <TextBlock x:Name="StgGenTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
                                     <Border x:Name="StgGenSep" Height="1"/>
-                                    <StackPanel Margin="14,12">
-                                        <CheckBox x:Name="ChkAutoStart" FontFamily="Consolas" FontSize="12" Click="AutoStart_Click"/>
+                                    <StackPanel Margin="18,14">
+                                        <CheckBox x:Name="ChkAutoStart" FontFamily="Segoe UI" FontSize="13" Click="AutoStart_Click"/>
+                                        <CheckBox x:Name="ChkAnim" FontFamily="Segoe UI" FontSize="13" Margin="0,12,0,0" Click="Anim_Click"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
 
-                            <Border x:Name="StgAboutCard" BorderThickness="1" CornerRadius="4" Padding="14,12">
+                            <Border x:Name="StgAboutCard" BorderThickness="1" CornerRadius="12" Padding="18,14">
                                 <StackPanel>
-                                    <TextBlock x:Name="StgAboutTitle" FontFamily="Consolas" FontSize="11" Margin="0,0,0,8"/>
-                                    <TextBlock x:Name="StgAboutVer" FontFamily="Consolas" FontSize="13" FontWeight="Bold"/>
-                                    <TextBlock x:Name="StgAboutDesc" FontFamily="Consolas" FontSize="11" Margin="0,4,0,0"/>
-                                    <TextBlock x:Name="StgSavePathLbl" FontFamily="Consolas" FontSize="9" Margin="0,8,0,0"/>
-                                    <TextBlock x:Name="StgSavePathVal" FontFamily="Consolas" FontSize="9" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock x:Name="StgAboutTitle" FontFamily="Segoe UI" FontSize="12" Margin="0,0,0,8"/>
+                                    <TextBlock x:Name="StgAboutVer" FontFamily="Segoe UI" FontSize="13" FontWeight="Bold"/>
+                                    <TextBlock x:Name="StgAboutDesc" FontFamily="Segoe UI" FontSize="12" Margin="0,4,0,0"/>
+                                    <TextBlock x:Name="StgSavePathLbl" FontFamily="Segoe UI" FontSize="10" Margin="0,8,0,0"/>
+                                    <TextBlock x:Name="StgSavePathVal" FontFamily="Consolas" FontSize="10" TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
 
-                    </Grid>
-                </ScrollViewer>
-            </Grid>
+                </Grid>
+            </ScrollViewer>
+
+            <!-- ═══ FOOTER ═══ -->
+            <Border x:Name="FooterBorder" Grid.Row="2" CornerRadius="0,0,14,14">
+                <StackPanel Orientation="Horizontal" Margin="22,0" VerticalAlignment="Center">
+                    <TextBlock x:Name="SbCpuLbl" Text="CPU" FontSize="11" VerticalAlignment="Center"/>
+                    <Border x:Name="SbCpuTrack" Width="90" Height="4" CornerRadius="2" Margin="8,0">
+                        <Border x:Name="SbCpuBar" Height="4" CornerRadius="2" HorizontalAlignment="Left" Width="0"/>
+                    </Border>
+                    <TextBlock x:Name="SbCpuVal" Text="—" FontSize="11" Width="38" TextAlignment="Right" VerticalAlignment="Center"/>
+                    <Border x:Name="SbSep" Width="1" Height="12" Margin="16,0"/>
+                    <TextBlock x:Name="SbRamLbl" Text="RAM" FontSize="11" VerticalAlignment="Center"/>
+                    <Border x:Name="SbRamTrack" Width="90" Height="4" CornerRadius="2" Margin="8,0">
+                        <Border x:Name="SbRamBar" Height="4" CornerRadius="2" HorizontalAlignment="Left" Width="0"/>
+                    </Border>
+                    <TextBlock x:Name="SbRamVal" Text="—" FontSize="11" Width="38" TextAlignment="Right" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Border>
         </Grid>
     </Border>
 </Window>

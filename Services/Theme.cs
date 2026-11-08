@@ -27,15 +27,15 @@ namespace VortexX.Services
             switch (t)
             {
                 case AppTheme.Midnight:
-                    return new ThemeColors("#05010F", "#0A0520", "#080315", "#1E0A40", "#A855F7", "#E8D5FF", "#7A60A0", "#00FF8C", "#FF2060", "#FFB800");
+                    return new ThemeColors("#0C0816", "#100B1D", "#130D1F", "#261B3D", "#A78BFA", "#EDE6FF", "#8B7FA8", "#22C55E", "#FB7185", "#FBBF24");
                 case AppTheme.Matrix:
-                    return new ThemeColors("#010A01", "#021202", "#011001", "#083A08", "#00FF41", "#CCFFCC", "#3E8A48", "#00FF41", "#FF4444", "#CCFF00");
+                    return new ThemeColors("#070D08", "#0A130B", "#0C160D", "#1B2E1D", "#22C55E", "#E3F5E5", "#6FA57B", "#22C55E", "#FB7185", "#FBBF24");
                 case AppTheme.Crimson:
-                    return new ThemeColors("#0F0205", "#1A0308", "#150204", "#380610", "#FF1744", "#FFD0D8", "#A06070", "#00E87A", "#FF1744", "#FFB800");
+                    return new ThemeColors("#12080C", "#170B10", "#1A0E12", "#33181F", "#FB7185", "#FBE7EA", "#A87A83", "#22C55E", "#FB7185", "#FBBF24");
                 case AppTheme.Arctic:
-                    return new ThemeColors("#010D1A", "#021525", "#011018", "#083050", "#60CFFF", "#E0F4FF", "#5A8AAA", "#00E87A", "#FF2060", "#FFB800");
+                    return new ThemeColors("#08111B", "#0B1722", "#0E1A26", "#1B3045", "#7DD3FC", "#E6F4FF", "#7A9BB5", "#22C55E", "#FB7185", "#FBBF24");
                 default:
-                    return new ThemeColors("#02050C", "#060D18", "#07101E", "#0E2040", "#00D4FF", "#D0E8FF", "#5A80A0", "#00E87A", "#FF2060", "#FFB800");
+                    return new ThemeColors("#090D14", "#0C121B", "#0F1620", "#1D2A3A", "#22D3EE", "#E6EEF9", "#7B8CA3", "#22C55E", "#FB7185", "#FBBF24");
             }
         }
     }

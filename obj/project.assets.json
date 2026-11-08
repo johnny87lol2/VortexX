@@ -113,11 +113,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jayyy\\Downloads\\VortexX-WPF (4)\\VortexX\\VortexX.csproj",
+      "projectUniqueName": "C:\\Users\\Jayyy\\Downloads\\VortexX-WPF (1)\\VortexX\\VortexX.csproj",
       "projectName": "VortexX",
-      "projectPath": "C:\\Users\\Jayyy\\Downloads\\VortexX-WPF (4)\\VortexX\\VortexX.csproj",
+      "projectPath": "C:\\Users\\Jayyy\\Downloads\\VortexX-WPF (1)\\VortexX\\VortexX.csproj",
       "packagesPath": "C:\\Users\\Jayyy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jayyy\\Downloads\\VortexX-WPF (4)\\VortexX\\obj\\",
+      "outputPath": "C:\\Users\\Jayyy\\Downloads\\VortexX-WPF (1)\\VortexX\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Jayyy\\AppData\\Roaming\\NuGet\\NuGet.Config",
