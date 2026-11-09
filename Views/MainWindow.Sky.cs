@@ -12,7 +12,6 @@ using VortexX.Services;
 
 namespace VortexX.Views
 {
-    // Skybox 更換頁面
     public partial class MainWindow
     {
         void ThemeSky()
@@ -43,7 +42,6 @@ namespace VortexX.Views
 
         void RefreshSky() { }
 
-        // ───────── 拖曳 .tex：檔名跟 Roblox 原本一樣就直接替換 ─────────
         void SkyDrop_Enter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -75,7 +73,6 @@ namespace VortexX.Views
                     SkyStatus.Text = Lang.T("mods.notinstalled");
                     return;
                 }
-                // 展開資料夾
                 var files = new List<string>();
                 foreach (string d in dropped)
                 {
@@ -83,7 +80,6 @@ namespace VortexX.Views
                     else if (File.Exists(d)) files.Add(d);
                 }
 
-                // 安裝資料夾裡所有跟天空有關的 .tex（路徑含 sky 或檔名以 sky 開頭），用檔名對應
                 string root = _s.InstallDir;
                 var index = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
                 foreach (string f in Directory.GetFiles(root, "*.tex", SearchOption.AllDirectories))

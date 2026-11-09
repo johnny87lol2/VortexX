@@ -13,7 +13,6 @@ using VortexX.Services;
 
 namespace VortexX.Views
 {
-    // AI Chat 頁面
     public partial class MainWindow
     {
         readonly List<ChatMsg> _chat = new List<ChatMsg>();
@@ -43,7 +42,6 @@ namespace VortexX.Views
             _chatTimer.Start();
         }
 
-        // ═════════ 設定讀寫 ═════════
         AiProvider CurProvider()
         {
             AiProvider p;
@@ -140,7 +138,6 @@ namespace VortexX.Views
             BuildModelChips();
         }
 
-        // ═════════ 事件 ═════════
         void Provider_Click(object sender, RoutedEventArgs e)
         {
             Button b = sender as Button;
@@ -180,7 +177,6 @@ namespace VortexX.Views
             ChatKeyBox.Password = "";
             UpdateKeyStatus();
 
-            // 存好金鑰後自動載入這個帳號真正能用的模型，避免用到已下架的舊模型
             if (key.Length > 0) await FetchModels(true);
         }
 
@@ -214,7 +210,6 @@ namespace VortexX.Views
             {
                 List<string> list = await AiService.ListModelsAsync(p, key, _s.AiBaseUrl);
                 _modelList = list;
-                // 目前選的模型不在清單裡（例如已下架），就換成清單裡適合的一個（自訂服務商清單不完整，不自動換）
                 if (replaceStaleModel && p != AiProvider.Custom && list.Count > 0 && !list.Contains(ChatModelBox.Text.Trim()))
                 {
                     ChatModelBox.Text = PickModel(list);
@@ -252,7 +247,6 @@ namespace VortexX.Views
             }
         }
 
-        // ═════════ 送出訊息 ═════════
         static bool LooksLikeApiKey(string s)
         {
             if (s.Length < 30 || s.Length > 300) return false;
@@ -300,7 +294,6 @@ namespace VortexX.Views
             string txt = ChatInput.Text.Trim();
             if (txt.Length == 0) return;
 
-            // 金鑰貼錯地方：不要把它當成訊息送出去
             if (LooksLikeApiKey(txt))
             {
                 ChatInput.Text = "";
@@ -383,7 +376,6 @@ namespace VortexX.Views
             RenderChat();
         }
 
-        // ═════════ 畫出對話 ═════════
         UIElement MakeBubble(string text, bool user, bool isError, ThemeColors c)
         {
             var tb = new TextBox();
@@ -480,7 +472,6 @@ namespace VortexX.Views
             ChatScroll.ScrollToEnd();
         }
 
-        // ═════════ 設定動作（只接受白名單裡的動作） ═════════
         static string OnOff(bool b) { return Lang.T(b ? "chat.on" : "chat.off"); }
 
         static bool ParseTheme(string v, out AppTheme t)
@@ -512,7 +503,6 @@ namespace VortexX.Views
             return t == null ? "" : t.ToString();
         }
 
-        /// <summary>Returns a readable description, or null when the action is not valid.</summary>
         string DescribeAction(JObject a)
         {
             string act = a.Value<string>("action");

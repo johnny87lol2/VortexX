@@ -22,8 +22,8 @@ namespace VortexX.Services
 
     public class StatusResult
     {
-        public string Indicator = "unknown";   // none / minor / major / critical / unknown / error
-        public string Source = "official";     // official / probe
+        public string Indicator = "unknown";
+        public string Source = "official";
         public string Time = DateTime.Now.ToString("HH:mm:ss");
         public List<StatusComp> Components = new List<StatusComp>();
     }
@@ -45,7 +45,6 @@ namespace VortexX.Services
             get { return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData); }
         }
 
-        // ───────── 版本 ─────────
         public static async Task<string> GetLatestVersionAsync()
         {
             try
@@ -75,7 +74,6 @@ namespace VortexX.Services
             catch { return false; }
         }
 
-        // ───────── 安裝 ─────────
         public static async Task InstallAsync(string dir, Action<int, string> progress, Action<string> log)
         {
             string ver = await GetLatestVersionAsync();
@@ -184,7 +182,6 @@ namespace VortexX.Services
             catch { }
         }
 
-        // ───────── 啟動 ─────────
         static void RunHidden(string file, string args)
         {
             try
@@ -271,7 +268,6 @@ namespace VortexX.Services
             catch { return null; }
         }
 
-        // ───────── 伺服器偵測 ─────────
         static readonly Regex JoinRx = new Regex(@"Joining game '([0-9a-fA-F\-]{36})' place ([0-9]+) at ([0-9\.]+)");
         static readonly Regex UdmuxRx = new Regex(@"UDMUX Address = ([0-9\.]+), Port = [0-9]+ \| RCC Server Address = ([0-9\.]+), Port = [0-9]+");
         static readonly Regex JoinedRx = new Regex(@"serverId:\s*([0-9\.]+)\|[0-9]+");
@@ -280,7 +276,6 @@ namespace VortexX.Services
         {
             try
             {
-                // Roblox 執行中會鎖住 log，必須允許共用讀取
                 using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
                 using (var sr = new StreamReader(fs))
                 {
@@ -312,7 +307,6 @@ namespace VortexX.Services
                     info.PlaceId = m.Groups[2].Value;
                     info.ServerIp = m.Groups[3].Value;
                     string after = text.Substring(m.Index);
-                    // Bloxstrap 的做法：伺服器多半有 UDMUX 代理，第一個位址才是公開 IP（RCC 位址常是 10.x 內網）
                     Match u = UdmuxRx.Match(after);
                     if (u.Success) info.ServerIp = u.Groups[1].Value;
                     else
@@ -357,12 +351,10 @@ namespace VortexX.Services
             return null;
         }
 
-        // ───────── 平台狀態 ─────────
         public static async Task<StatusResult> GetStatusAsync()
         {
             var res = new StatusResult();
 
-            // 1) 官方 statuspage JSON
             try
             {
                 string json = await Http.GetStringAsync("https://status.roblox.com/api/v2/summary.json");
@@ -389,7 +381,6 @@ namespace VortexX.Services
             }
             catch { }
 
-            // 2) 官方網頁：只有明確寫著「全部正常」才信
             try
             {
                 string html = await Http.GetStringAsync("https://status.roblox.com/");
@@ -402,11 +393,9 @@ namespace VortexX.Services
             }
             catch { }
 
-            // 3) 實際連線探測（絕不誤報大當機）
             return await ProbeAsync();
         }
 
-        // 官方資料沒有服務清單時（例如網頁只有一句「全部正常」），用實際連線探測補上清單
         static async Task<StatusResult> FillComponents(StatusResult res)
         {
             if (res.Components.Count == 0)
@@ -461,7 +450,6 @@ namespace VortexX.Services
             catch { return false; }
         }
 
-        // ───────── Ping ─────────
         public static async Task<long> PingAsync(string host)
         {
             try

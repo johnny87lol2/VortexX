@@ -90,11 +90,11 @@ namespace VortexX.Views
                 var openFade = new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(350));
                 if (Motion.Enabled) WinBorder.BeginAnimation(UIElement.OpacityProperty, openFade);
                 Tick();
+                var upd = CheckUpdateAsync(true);
                 await CheckVersionAsync();
             };
         }
 
-        // ═════════ 顏色工具 ═════════
         static SolidColorBrush Br(string hex)
         {
             var b = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex));
@@ -136,7 +136,6 @@ namespace VortexX.Views
             foreach (Button b in items) { b.Background = bg; b.Foreground = fg; b.BorderBrush = bd; }
         }
 
-        // ═════════ 套用主題（絕不碰 TCard 預覽卡） ═════════
         void ApplyTheme()
         {
             ThemeColors c = Theme.Current;
@@ -214,7 +213,6 @@ namespace VortexX.Views
             InputIp.BorderBrush = bd;
             InputIp.CaretBrush = ac;
 
-            // AI Chat
             Cards(card, bd, ChatCfgCard, ChatLogCard);
             Fill(bd, ChatCfgSep);
             Fore(ac, TxtChatTitle);
@@ -258,7 +256,6 @@ namespace VortexX.Views
             UpdateRunning();
         }
 
-        // ═════════ 套用語言 ═════════
         static string U(string key) { return Lang.T(key); }
 
         void ApplyLang()
@@ -384,7 +381,6 @@ namespace VortexX.Views
             UpdateRunning();
         }
 
-        // ═════════ 視窗控制 ═════════
         void TitleBar_Down(object sender, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2) { ToggleMax(); return; }
@@ -406,7 +402,6 @@ namespace VortexX.Views
         void BtnMax_Click(object sender, RoutedEventArgs e) { ToggleMax(); }
         void BtnClose_Click(object sender, RoutedEventArgs e) { Close(); }
 
-        // ═════════ 導覽 ═════════
         void Nav_Click(object sender, RoutedEventArgs e)
         {
             Button b = sender as Button;
@@ -417,7 +412,6 @@ namespace VortexX.Views
         void BtnGoInstall_Click(object sender, RoutedEventArgs e) { ShowPage("Install"); }
         async void BtnGoLaunch_Click(object sender, RoutedEventArgs e)
         {
-            // 大廳一鍵啟動：不用跳到啟動頁
             if (_launching) return;
             _launching = true;
             BtnGoLaunch.IsEnabled = false;
@@ -473,7 +467,6 @@ namespace VortexX.Views
             else if (name == "Sky") { RefreshSky(); }
         }
 
-        // 換頁動畫：淡入 + 由下往上滑入
         void AnimatePage(string name)
         {
             FrameworkElement pg = PgHome;
@@ -518,7 +511,6 @@ namespace VortexX.Views
             }
         }
 
-        // ═════════ 系統監控 ═════════
         void Tick()
         {
             _cpu = SysStats.Cpu();
@@ -564,7 +556,6 @@ namespace VortexX.Views
             TxtRbRunning.Foreground = Br(r ? c.Green : c.Gray);
         }
 
-        // ═════════ 版本 / 安裝 ═════════
         async Task CheckVersionAsync()
         {
             if (_checking) return;
@@ -690,7 +681,6 @@ namespace VortexX.Views
             await CheckVersionAsync();
         }
 
-        // ═════════ 啟動 ═════════
         void LaunchOpt_Click(object sender, RoutedEventArgs e)
         {
             _s.FlushDns = ChkFlushDns.IsChecked == true;
@@ -727,7 +717,6 @@ namespace VortexX.Views
             LaunchLogText.Text = "";
         }
 
-        // ═════════ Roblox 平台狀態 ═════════
         async void BtnRefreshStatus_Click(object sender, RoutedEventArgs e)
         {
             await RefreshStatusAsync();
@@ -821,7 +810,6 @@ namespace VortexX.Views
             }
         }
 
-        // ═════════ 伺服器資訊 ═════════
         async void BtnRefreshServer_Click(object sender, RoutedEventArgs e)
         {
             await RefreshServerAsync();
@@ -919,7 +907,6 @@ namespace VortexX.Views
             SrvAsVal.Text = _srvGeo.As;
         }
 
-        // ── 手動 IP 查詢 ──
         async void BtnIpLookup_Click(object sender, RoutedEventArgs e)
         {
             await DoIpLookup();
@@ -1005,7 +992,6 @@ namespace VortexX.Views
             AddRow(IpResultPanel, Lang.T("server.as"), _ipGeo.As, tx);
         }
 
-        // ── Ping ──
         List<KeyValuePair<string, string>> PingTargets()
         {
             var l = new List<KeyValuePair<string, string>>();
@@ -1081,7 +1067,6 @@ namespace VortexX.Views
             BuildPingRows();
         }
 
-        // ═════════ 設定 ═════════
         void Lang_Click(object sender, RoutedEventArgs e)
         {
             _s.Language = RbZh.IsChecked == true ? AppLanguage.ZhTW : AppLanguage.English;
@@ -1105,7 +1090,6 @@ namespace VortexX.Views
             }
         }
 
-        // 只改預覽卡的框線粗細，顏色永遠固定，所以不會消失
         void MarkSelectedTheme()
         {
             Border[] cards = { TCardCyber, TCardMidnight, TCardMatrix, TCardCrimson, TCardArctic };

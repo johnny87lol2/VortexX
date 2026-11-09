@@ -7,7 +7,6 @@ namespace VortexX.Services
 {
     public static class SettingsService
     {
-        // 設定存在 Voretex_RB 資料夾，Bootstrapper 只更新 exe，不會動 settings.json
         static readonly string DataDir = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Voretex_RB");
         static readonly string SettingsPath = Path.Combine(DataDir, "settings.json");

@@ -9,7 +9,6 @@ using Newtonsoft.Json.Linq;
 
 namespace VortexX.Services
 {
-    /// <summary>類似 Bloxstrap 的 Mods：Mods 資料夾裡的檔案會覆蓋到 Roblox 安裝資料夾（保留原檔備份，移除後自動還原）。</summary>
     public static class ModService
     {
         public static readonly string Root = Path.Combine(
@@ -18,7 +17,6 @@ namespace VortexX.Services
         static string BackupDir { get { return Path.Combine(Root, "ModBackup"); } }
         static string StatePath { get { return Path.Combine(Root, "mods-state.json"); } }
 
-        /// <summary>FPS 上限：Roblox 已不再接受 DFIntTaskSchedulerTargetFps，改寫遊戲內「最大幀率」的設定檔。</summary>
         public static bool ApplyFpsCap(int cap, Action<string> log)
         {
             if (cap <= 0) return false;
@@ -99,7 +97,6 @@ namespace VortexX.Services
             try { File.WriteAllText(StatePath, JsonConvert.SerializeObject(l, Formatting.Indented)); } catch { }
         }
 
-        /// <summary>套用 Mods。回傳套用的檔案數。</summary>
         public static int Apply(string installDir, Action<string> log)
         {
             if (string.IsNullOrEmpty(installDir) || !Directory.Exists(installDir)) return 0;
@@ -108,7 +105,6 @@ namespace VortexX.Services
             List<string> prev = LoadState();
             int ok = 0;
 
-            // 1) 已不在 Mods 資料夾的檔案 → 還原原檔或刪除
             foreach (string rel in prev)
             {
                 if (files.Contains(rel, StringComparer.OrdinalIgnoreCase)) continue;
@@ -123,7 +119,6 @@ namespace VortexX.Services
                 catch (Exception ex) { if (log != null) log("Mods: " + rel + " - " + ex.Message); }
             }
 
-            // 2) 套用目前的 Mods
             foreach (string rel in files)
             {
                 try
@@ -147,7 +142,6 @@ namespace VortexX.Services
         }
     }
 
-    /// <summary>引擎設定（FastFlags）：存成 Mods\ClientSettings\ClientAppSettings.json，啟動時隨 Mods 一起套用。</summary>
     public static class FlagService
     {
         public static string FilePath

@@ -7,7 +7,6 @@ using System.Windows.Media.Animation;
 
 namespace VortexX.Services
 {
-    /// <summary>互動動畫（懸停放大、按下縮小）。可在設定裡整個關掉。</summary>
     public static class Motion
     {
         public static bool Enabled = true;

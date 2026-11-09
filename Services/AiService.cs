@@ -21,7 +21,7 @@ namespace VortexX.Services
 
     public class ChatMsg
     {
-        public string Role = "user";      // user / assistant
+        public string Role = "user";
         public string Text = "";
         public bool IsError;
         public List<ChatAction> Actions = new List<ChatAction>();
@@ -39,7 +39,6 @@ namespace VortexX.Services
             return h;
         }
 
-        // ───────── 預設模型（可在介面自行修改，或按「載入模型清單」取得最新） ─────────
         public static string DefaultModel(AiProvider p)
         {
             switch (p)
@@ -62,7 +61,6 @@ namespace VortexX.Services
             }
         }
 
-        // ───────── API 金鑰加密（Windows DPAPI，只有同一個 Windows 帳號能解開） ─────────
         public static string Protect(string plain)
         {
             if (string.IsNullOrEmpty(plain)) return "";
@@ -85,7 +83,6 @@ namespace VortexX.Services
             catch { return ""; }
         }
 
-        // ───────── HTTP 工具 ─────────
         static string CleanBase(string baseUrl)
         {
             string b = (baseUrl ?? "").Trim();
@@ -140,7 +137,6 @@ namespace VortexX.Services
             return req;
         }
 
-        // ───────── 聊天 ─────────
         public static async Task<string> ChatAsync(AiProvider p, string model, string key, string baseUrl, string system, List<ChatMsg> hist)
         {
             switch (p)
@@ -255,7 +251,6 @@ namespace VortexX.Services
             return sb.ToString();
         }
 
-        // ───────── 模型清單 ─────────
         static bool SkipOpenAiModel(string id)
         {
             string l = id.ToLowerInvariant();
@@ -326,10 +321,8 @@ namespace VortexX.Services
             return ids;
         }
 
-        // ───────── AI 回覆裡的「設定動作」 ─────────
         static readonly Regex ActionRx = new Regex("```vortex-action\\s*(\\{.*?\\})\\s*```", RegexOptions.Singleline);
 
-        /// <summary>Collects action blocks into <paramref name="actions"/> and returns the text without them.</summary>
         public static string ExtractActions(string text, List<JObject> actions)
         {
             foreach (Match m in ActionRx.Matches(text))

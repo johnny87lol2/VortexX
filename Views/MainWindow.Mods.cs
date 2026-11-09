@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,7 +11,6 @@ using VortexX.Services;
 
 namespace VortexX.Views
 {
-    // Mods 與 Engine Settings（FastFlags）頁面
     public partial class MainWindow
     {
         static readonly string[] PresetKeys =
@@ -79,7 +79,6 @@ namespace VortexX.Views
             BtnEngReset.Content = Lang.T("eng.reset");
         }
 
-        // ───────── Mods ─────────
         void RefreshMods()
         {
             ModService.EnsureFolder();
@@ -116,7 +115,6 @@ namespace VortexX.Views
             SettingsService.Save(_s);
         }
 
-        // ───────── Engine Settings ─────────
         static string FlagStr(JObject o, string key)
         {
             JToken t = o[key];
@@ -155,7 +153,6 @@ namespace VortexX.Views
                 return;
             }
 
-            // 先把預設旗標清掉，再依上面的選項寫回（JSON 框裡其他自訂旗標保留）
             foreach (string k in PresetKeys) o.Remove(k);
 
             int dummy;
@@ -187,7 +184,6 @@ namespace VortexX.Views
             if (EngNoShadow.IsChecked == true) o["FIntRenderShadowIntensity"] = "0";
             if (EngNoDpi.IsChecked == true) o["DFFlagDisableDPIScale"] = "True";
 
-            // Roblox 的 FastFlag 值一律用字串
             foreach (JProperty p in new List<JProperty>(o.Properties()))
             {
                 if (p.Value.Type == JTokenType.Boolean) p.Value = (bool)p.Value ? "True" : "False";
@@ -218,7 +214,6 @@ namespace VortexX.Views
             RefreshMods();
         }
 
-        // ───────── 檢查更新 ─────────
         bool _updBusy;
 
         void ShowLocalVersion()
@@ -228,6 +223,11 @@ namespace VortexX.Views
         }
 
         async void BtnCheckUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            await CheckUpdateAsync(false);
+        }
+
+        async Task CheckUpdateAsync(bool startup)
         {
             if (_updBusy) return;
             _updBusy = true;

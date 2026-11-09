@@ -4,7 +4,6 @@ using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace VortexX.Services
 {
-    // 用 Win32 API 讀 CPU / RAM，不依賴 wmic（新版 Windows 已移除）
     public static class SysStats
     {
         [StructLayout(LayoutKind.Sequential)]
