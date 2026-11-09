@@ -1,8 +1,8 @@
 <Window x:Class="VortexX.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="VortexX" Height="720" Width="1120"
-        MinHeight="640" MinWidth="1040"
+        Title="VortexX" Height="720" Width="1240"
+        MinHeight="640" MinWidth="1200"
         WindowStyle="None" AllowsTransparency="True"
         Background="Transparent"
         FontFamily="Segoe UI" FontSize="13"
@@ -199,14 +199,17 @@
                     <Border x:Name="SidebarBorder" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
                             CornerRadius="13" BorderThickness="1" Padding="4">
                         <StackPanel Orientation="Horizontal">
-                            <Button x:Name="BtnHome" Click="Nav_Click" Tag="Home" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
-                            <Button x:Name="BtnInstall" Click="Nav_Click" Tag="Install" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
-                            <Button x:Name="BtnLaunch" Click="Nav_Click" Tag="Launch" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
-                            <Button x:Name="BtnStatus" Click="Nav_Click" Tag="Status" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
-                            <Button x:Name="BtnServer" Click="Nav_Click" Tag="Server" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
-                            <Button x:Name="BtnChat" Click="Nav_Click" Tag="Chat" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnHome" Click="Nav_Click" Tag="Home" Margin="2,0" Padding="10,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnInstall" Click="Nav_Click" Tag="Install" Margin="2,0" Padding="10,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnLaunch" Click="Nav_Click" Tag="Launch" Margin="2,0" Padding="10,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnStatus" Click="Nav_Click" Tag="Status" Margin="2,0" Padding="10,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnServer" Click="Nav_Click" Tag="Server" Margin="2,0" Padding="10,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnChat" Click="Nav_Click" Tag="Chat" Margin="2,0" Padding="10,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnMods" Click="Nav_Click" Tag="Mods" Margin="2,0" Padding="10,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnEngine" Click="Nav_Click" Tag="Engine" Margin="2,0" Padding="10,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnSky" Click="Nav_Click" Tag="Sky" Margin="2,0" Padding="10,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
                             <Border x:Name="NavSep2" Width="1" Height="18" Margin="6,0"/>
-                            <Button x:Name="BtnSettings" Click="Nav_Click" Tag="Settings" Margin="2,0" Padding="14,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
+                            <Button x:Name="BtnSettings" Click="Nav_Click" Tag="Settings" Margin="2,0" Padding="10,8" BorderThickness="0" FontSize="13" FontWeight="Medium"/>
                         </StackPanel>
                     </Border>
 
@@ -531,6 +534,111 @@
                             <TextBlock x:Name="ChatHint" FontFamily="Segoe UI" FontSize="11" TextWrapping="Wrap" Margin="0,8,0,0"/>
                         </StackPanel>
 
+                        <!-- ═══ MODS ═══ -->
+                        <StackPanel x:Name="PgMods" Visibility="Collapsed">
+                            <TextBlock x:Name="TxtModsTitle" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                            <Border x:Name="ModsInfoCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <TextBlock x:Name="ModsInfoTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
+                                    <Border x:Name="ModsInfoSep" Height="1"/>
+                                    <StackPanel Margin="18,14">
+                                        <TextBlock x:Name="ModsDesc" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,12"/>
+                                        <Border x:Name="ModsPathBox" BorderThickness="1" CornerRadius="8" Padding="10,7" Margin="0,0,0,12">
+                                            <TextBlock x:Name="ModsPathVal" FontFamily="Consolas" FontSize="12" TextTrimming="CharacterEllipsis"/>
+                                        </Border>
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                            <Button x:Name="BtnOpenMods" Click="BtnOpenMods_Click" Padding="16,9" BorderThickness="1" FontSize="12" Margin="0,0,8,0"/>
+                                            <Button x:Name="BtnApplyMods" Click="BtnApplyMods_Click" Padding="16,9" BorderThickness="1" FontSize="12"/>
+                                        </StackPanel>
+                                        <CheckBox x:Name="ChkApplyMods" FontSize="13" Click="ChkApplyMods_Click"/>
+                                        <TextBlock x:Name="ModsStatus" FontSize="12" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border x:Name="ModsFilesCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <TextBlock x:Name="ModsFilesTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
+                                    <Border x:Name="ModsFilesSep" Height="1"/>
+                                    <StackPanel Margin="18,14">
+                                        <TextBlock x:Name="ModsFilesText" FontFamily="Consolas" FontSize="12" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- ═══ ENGINE SETTINGS ═══ -->
+                        <StackPanel x:Name="PgEngine" Visibility="Collapsed">
+                            <TextBlock x:Name="TxtEngTitle" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                            <Border x:Name="EngPresetCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <TextBlock x:Name="EngPresetTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
+                                    <Border x:Name="EngPresetSep" Height="1"/>
+                                    <StackPanel Margin="18,14">
+                                        <TextBlock x:Name="EngDesc" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,14"/>
+                                        <Grid Margin="0,0,0,14">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/><ColumnDefinition Width="12"/><ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0"><TextBlock x:Name="EngFpsLbl" FontSize="12" Margin="0,0,0,6"/><TextBox x:Name="EngFps" FontFamily="Consolas" FontSize="13" Padding="10,8" BorderThickness="1"/></StackPanel>
+                                            <StackPanel Grid.Column="2"><TextBlock x:Name="EngMsaaLbl" FontSize="12" Margin="0,0,0,6"/><TextBox x:Name="EngMsaa" FontFamily="Consolas" FontSize="13" Padding="10,8" BorderThickness="1"/></StackPanel>
+                                            <StackPanel Grid.Column="4"><TextBlock x:Name="EngTexLbl" FontSize="12" Margin="0,0,0,6"/><TextBox x:Name="EngTex" FontFamily="Consolas" FontSize="13" Padding="10,8" BorderThickness="1"/></StackPanel>
+                                        </Grid>
+                                        <CheckBox x:Name="EngNoPostFx" FontSize="13" Margin="0,0,0,8"/>
+                                        <CheckBox x:Name="EngNoGrass" FontSize="13" Margin="0,0,0,8"/>
+                                        <CheckBox x:Name="EngNoShadow" FontSize="13" Margin="0,0,0,8"/>
+                                        <CheckBox x:Name="EngNoDpi" FontSize="13"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border x:Name="EngJsonCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <TextBlock x:Name="EngJsonTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
+                                    <Border x:Name="EngJsonSep" Height="1"/>
+                                    <StackPanel Margin="18,14">
+                                        <TextBlock x:Name="EngJsonDesc" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                        <TextBox x:Name="EngJsonBox" FontFamily="Consolas" FontSize="12" Padding="10,8" BorderThickness="1"
+                                                 AcceptsReturn="True" AcceptsTab="True" TextWrapping="NoWrap"
+                                                 VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                                                 MinHeight="130" MaxHeight="260" Margin="0,0,0,12"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="BtnEngSave" Click="BtnEngSave_Click" Padding="18,9" BorderThickness="1" FontSize="12" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                                            <Button x:Name="BtnEngReset" Click="BtnEngReset_Click" Padding="16,9" BorderThickness="1" FontSize="12"/>
+                                        </StackPanel>
+                                        <TextBlock x:Name="EngStatus" FontSize="12" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- ═══ SKYBOX ═══ -->
+                        <StackPanel x:Name="PgSky" Visibility="Collapsed">
+                            <TextBlock x:Name="TxtSkyTitle" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                            <Border x:Name="SkyCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12" AllowDrop="True" Drop="SkyDrop_Drop" DragEnter="SkyDrop_Enter" DragLeave="SkyDrop_Leave">
+                                <StackPanel>
+                                    <TextBlock x:Name="SkyCardTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
+                                    <Border x:Name="SkyCardSep" Height="1"/>
+                                    <StackPanel Margin="18,14,18,6">
+                                        <TextBlock x:Name="SkyDesc" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,14"/>
+                                        <Border x:Name="SkyDrop" BorderThickness="2" CornerRadius="12" Padding="20,26" Margin="0,0,0,16" AllowDrop="True">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <TextBlock x:Name="SkyDropIcon" Text="⤓" FontSize="30" HorizontalAlignment="Center"/>
+                                                <TextBlock x:Name="SkyDropText" FontSize="14" FontWeight="SemiBold" TextAlignment="Center" Margin="0,6,0,0"/>
+                                                <TextBlock x:Name="SkyDropSub" FontSize="12" TextAlignment="Center" Margin="0,4,0,0"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                    <StackPanel Margin="18,0,18,14">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="BtnSkyReset" Click="BtnSkyReset_Click" Padding="16,9" BorderThickness="1" FontSize="12"/>
+                                        </StackPanel>
+                                        <TextBlock x:Name="SkyStatus" FontSize="12" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
                         <!-- ═══ SETTINGS ═══ -->
                         <StackPanel x:Name="PgSettings" Visibility="Collapsed">
                             <TextBlock x:Name="TxtSettingsTitle" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,16"/>
@@ -612,6 +720,18 @@
                                     <StackPanel Margin="18,14">
                                         <CheckBox x:Name="ChkAutoStart" FontFamily="Segoe UI" FontSize="13" Click="AutoStart_Click"/>
                                         <CheckBox x:Name="ChkAnim" FontFamily="Segoe UI" FontSize="13" Margin="0,12,0,0" Click="Anim_Click"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border x:Name="StgUpdCard" BorderThickness="1" CornerRadius="12" Margin="0,0,0,12">
+                                <StackPanel>
+                                    <TextBlock x:Name="StgUpdTitle" FontSize="13" FontWeight="SemiBold" Padding="18,14"/>
+                                    <Border x:Name="StgUpdSep" Height="1"/>
+                                    <StackPanel Margin="18,14">
+                                        <TextBlock x:Name="StgUpdVer" FontSize="12" Margin="0,0,0,12"/>
+                                        <Button x:Name="BtnCheckUpdate" Click="BtnCheckUpdate_Click" HorizontalAlignment="Left" Padding="18,9" BorderThickness="1" FontSize="12" FontWeight="SemiBold"/>
+                                        <TextBlock x:Name="StgUpdStatus" FontSize="12" Margin="0,10,0,0" TextWrapping="Wrap"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>

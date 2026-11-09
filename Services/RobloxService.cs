@@ -214,8 +214,19 @@ namespace VortexX.Services
                 log(Lang.T("log.power"));
             }
             string exe = Path.Combine(dir, "RobloxPlayerBeta.exe");
+            if (App.Settings.Prop.FpsCap > 0 && !IsRunning())
+                ModService.ApplyFpsCap(App.Settings.Prop.FpsCap, log);
             if (File.Exists(exe))
             {
+                try
+                {
+                    if (App.Settings.Prop.ApplyMods)
+                    {
+                        int n = ModService.Apply(dir, log);
+                        if (n > 0) log(string.Format(Lang.T("log.mods"), n));
+                    }
+                }
+                catch (Exception ex) { log("Mods: " + ex.Message); }
                 var psi = new ProcessStartInfo(exe, "--app");
                 psi.WorkingDirectory = dir;
                 psi.UseShellExecute = false;

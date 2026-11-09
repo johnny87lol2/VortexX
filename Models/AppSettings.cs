@@ -16,6 +16,9 @@ namespace VortexX.Models
         public bool PowerMode { get; set; } = true;
         public bool AutoStart { get; set; } = false;
         public bool Animations { get; set; } = true;
+        public bool ApplyMods { get; set; } = true;
+        public Dictionary<string, string> SkyFaces { get; set; } = new Dictionary<string, string>();
+        public int FpsCap { get; set; } = 0;   // 0 = 不修改
         public AppLanguage Language { get; set; } = AppLanguage.English;
         public AppTheme Theme { get; set; } = AppTheme.Cyber;
 

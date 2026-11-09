@@ -232,6 +232,8 @@ namespace VortexX.Views
             ChatKeyBox.CaretBrush = ac;
             BtnStyle(ac, bg, ac, BtnChatSend);
             BtnStyle(bg1, ac, bd, BtnChatSaveKey, BtnChatFetch, BtnChatClear);
+            ThemeMods();
+            ThemeSky();
             BuildModelChips();
             MarkProvider();
             UpdateKeyStatus();
@@ -269,6 +271,8 @@ namespace VortexX.Views
             BtnStatus.Content = Lang.T("nav.status");
             BtnServer.Content = Lang.T("nav.server");
             BtnSettings.Content = Lang.T("nav.settings");
+            LangMods();
+            LangSky();
 
             int hr = DateTime.Now.Hour;
             string gk = hr < 12 ? "home.greet_m" : (hr < 18 ? "home.greet_a" : "home.greet_e");
@@ -453,6 +457,9 @@ namespace VortexX.Views
             PgStatus.Visibility = name == "Status" ? Visibility.Visible : Visibility.Collapsed;
             PgServer.Visibility = name == "Server" ? Visibility.Visible : Visibility.Collapsed;
             PgChat.Visibility = name == "Chat" ? Visibility.Visible : Visibility.Collapsed;
+            PgMods.Visibility = name == "Mods" ? Visibility.Visible : Visibility.Collapsed;
+            PgEngine.Visibility = name == "Engine" ? Visibility.Visible : Visibility.Collapsed;
+            PgSky.Visibility = name == "Sky" ? Visibility.Visible : Visibility.Collapsed;
             PgSettings.Visibility = name == "Settings" ? Visibility.Visible : Visibility.Collapsed;
             HighlightNav();
             AnimatePage(name);
@@ -461,6 +468,9 @@ namespace VortexX.Views
             else if (name == "Launch") { UpdateLaunchPath(); }
             else if (name == "Status") { if (_status == null && !_statusBusy) { var t2 = RefreshStatusAsync(); } }
             else if (name == "Server") { if (!_srvBusy) { var t3 = RefreshServerAsync(); } }
+            else if (name == "Mods") { RefreshMods(); }
+            else if (name == "Engine") { LoadEngine(); }
+            else if (name == "Sky") { RefreshSky(); }
         }
 
         // 換頁動畫：淡入 + 由下往上滑入
@@ -472,6 +482,9 @@ namespace VortexX.Views
             else if (name == "Status") pg = PgStatus;
             else if (name == "Server") pg = PgServer;
             else if (name == "Chat") pg = PgChat;
+            else if (name == "Mods") pg = PgMods;
+            else if (name == "Engine") pg = PgEngine;
+            else if (name == "Sky") pg = PgSky;
             else if (name == "Settings") pg = PgSettings;
 
             if (!Motion.Enabled)
@@ -495,7 +508,7 @@ namespace VortexX.Views
         void HighlightNav()
         {
             ThemeColors c = Theme.Current;
-            Button[] navs = { BtnHome, BtnInstall, BtnLaunch, BtnStatus, BtnServer, BtnChat, BtnSettings };
+            Button[] navs = { BtnHome, BtnInstall, BtnLaunch, BtnStatus, BtnServer, BtnChat, BtnMods, BtnEngine, BtnSky, BtnSettings };
             foreach (Button b in navs)
             {
                 bool act = (b.Tag as string) == _page;
