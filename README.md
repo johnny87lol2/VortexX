@@ -38,12 +38,6 @@ Keep Roblox up to date in a folder you choose, launch it with one click, tweak t
 3. Open **Install**, choose a folder, and press **Install Roblox**.
 4. Press **Launch** on the home page (or open the **Launch** tab).
 
-## Notes
-
-- **FPS cap**: Roblox no longer accepts the old FPS-related FastFlags, and officially limits the frame rate to 240. VortexX writes your value into Roblox's own settings file, but values above 240 may be ignored by the Roblox client.
-- **FastFlags**: Roblox only accepts flags on its allow-list, so some flags may have no effect.
-- **Skybox**: only shows in experiences that use Roblox's default sky.
-
 ## Build from source
 
 Requirements: Windows 10/11, [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0), Visual Studio 2022 (optional).
