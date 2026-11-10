@@ -1,26 +1,32 @@
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\bin\Debug\net8.0-windows\v.txt
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\bin\Debug\net8.0-windows\VortexX.exe
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\bin\Debug\net8.0-windows\VortexX.deps.json
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\bin\Debug\net8.0-windows\VortexX.runtimeconfig.json
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\bin\Debug\net8.0-windows\VortexX.dll
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\bin\Debug\net8.0-windows\VortexX.pdb
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX.csproj.AssemblyReference.cache
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\Views\LoadingWindow.baml
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\Views\MainWindow.baml
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\Views\LoadingWindow.g.cs
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\Views\MainWindow.g.cs
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\App.g.cs
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX_MarkupCompile.cache
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX.g.resources
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX.AssemblyInfoInputs.cache
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX.AssemblyInfo.cs
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX.csproj.CoreCompileInputs.cache
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX.csproj.Up2Date
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX.dll
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\refint\VortexX.dll
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX.pdb
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX.genruntimeconfig.cache
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\ref\VortexX.dll
-C:\Users\Jayyy\Downloads\VortexX-WPF (2)\VortexX\obj\Debug\net8.0-windows\VortexX_Content.g.cs
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\SkyFix\6c94b9385e52d221f0538aadaceead2d
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\SkyFix\7328622d2d509b95dd4dd2c721d1ca8b
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\SkyFix\78cb2e93aee0cdbd79b15a866bc93a54
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\SkyFix\9244e00ff9fd6cee0bb40a262bb35d31
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\SkyFix\a50f6563c50ca4d5dcb255ee5cfab097
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\SkyFix\a564ec8aeef3614e788d02f0090089d8
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\v.txt
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\VortexX.exe
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\VortexX.deps.json
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\VortexX.runtimeconfig.json
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\VortexX.dll
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\VortexX.pdb
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX.csproj.AssemblyReference.cache
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\Views\LoadingWindow.baml
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\Views\MainWindow.baml
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\Views\LoadingWindow.g.cs
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\Views\MainWindow.g.cs
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX_MarkupCompile.cache
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX.g.resources
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX.AssemblyInfoInputs.cache
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX.AssemblyInfo.cs
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX.csproj.CoreCompileInputs.cache
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX.csproj.Up2Date
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX.dll
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\refint\VortexX.dll
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX.pdb
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX.genruntimeconfig.cache
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\ref\VortexX.dll
+C:\Users\Jayyy\Downloads\VortexX-WPF\VortexX\obj\Debug\net8.0-windows\VortexX_Content.g.cs

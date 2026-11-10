@@ -53,6 +53,55 @@ namespace VortexX.Services
             }
         }
 
+        static string SkyFixSource { get { return Path.Combine(AppContext.BaseDirectory, "SkyFix"); } }
+        static string RbxStorage
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Roblox", "rbx-storage");
+            }
+        }
+
+        /// <summary>Skybox 修正：把 SkyFix 內的快取檔複製到 Roblox 的 rbx-storage（資料夾是檔名前兩碼），並設為唯讀。</summary>
+        public static int ApplySkyFix()
+        {
+            if (!Directory.Exists(SkyFixSource)) throw new FileNotFoundException("SkyFix folder not found: " + SkyFixSource);
+            int n = 0;
+            foreach (string f in Directory.GetFiles(SkyFixSource))
+            {
+                string name = Path.GetFileName(f);
+                if (name.Length < 3) continue;
+                string dir = Path.Combine(RbxStorage, name.Substring(0, 2));
+                Directory.CreateDirectory(dir);
+                string dest = Path.Combine(dir, name);
+                if (File.Exists(dest)) File.SetAttributes(dest, FileAttributes.Normal);
+                File.Copy(f, dest, true);
+                File.SetAttributes(dest, FileAttributes.ReadOnly);
+                n++;
+            }
+            return n;
+        }
+
+        public static void RemoveSkyFix()
+        {
+            if (!Directory.Exists(SkyFixSource)) return;
+            foreach (string f in Directory.GetFiles(SkyFixSource))
+            {
+                string name = Path.GetFileName(f);
+                if (name.Length < 3) continue;
+                string dest = Path.Combine(RbxStorage, name.Substring(0, 2), name);
+                try
+                {
+                    if (File.Exists(dest))
+                    {
+                        File.SetAttributes(dest, FileAttributes.Normal);
+                        File.Delete(dest);
+                    }
+                }
+                catch { }
+            }
+        }
+
         public static void EnsureFolder()
         {
             try { Directory.CreateDirectory(ModsDir); } catch { }

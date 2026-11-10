@@ -73,6 +73,8 @@ namespace VortexX.Views
                     SkyStatus.Text = Lang.T("mods.notinstalled");
                     return;
                 }
+                ModService.ApplySkyFix();
+
                 var files = new List<string>();
                 foreach (string d in dropped)
                 {
@@ -132,6 +134,7 @@ namespace VortexX.Views
             {
                 foreach (string file in Directory.GetFiles(ModService.ModsDir, "sky512_*.tex", SearchOption.AllDirectories))
                     File.Delete(file);
+                ModService.RemoveSkyFix();
                 if (RobloxService.IsInstalled(_s.InstallDir)) ModService.Apply(_s.InstallDir, null);
                 SkyStatus.Foreground = Br(c.Gray);
                 SkyStatus.Text = Lang.T("sky.resetdone");
