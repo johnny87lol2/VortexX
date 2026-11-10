@@ -21,7 +21,7 @@ Keep Roblox up to date in a folder you choose, launch it with one click, tweak t
 - **One-click launch**: the Launch button on the home page starts Roblox right away. It can optionally flush the DNS cache and switch to the high-performance power plan first.
 - **Mods**: put files in the Mods folder and they are applied over your Roblox install on launch. Original files are backed up and restored when you remove a mod.
 - **Engine Settings (FastFlags)**: quick settings for FPS cap, MSAA, texture quality, post-processing, grass, shadows and DPI scaling, plus a JSON editor for custom flags.
-- **Skybox**: drag and drop your sky `.tex` files onto the Skybox page. Files whose names match Roblox's sky files replace them automatically. One click restores the defaults.
+- **Skybox**: only for Rivals drag and drop your sky `.tex` files onto the Skybox page. Files whose names match Roblox's sky files replace them automatically. One click restores the defaults.
 - **Server info**: automatically detects the Roblox server you are currently in (game name, place ID, job ID, IP) and shows its location, ISP and timezone. It can also look up any IP or hostname manually, and measures ping to Roblox services and your game server.
 - **Roblox status**: shows platform status. It reads the official status page and falls back to a live connectivity check, so it avoids false "outage" alarms.
 - **AI Chat**: chat with Anthropic, OpenAI, Gemini or any OpenAI-compatible provider. The AI can propose changes to VortexX settings (theme, language, and more), and nothing is changed until you press Apply. API keys are encrypted with Windows DPAPI.
