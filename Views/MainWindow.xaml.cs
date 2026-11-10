@@ -59,6 +59,7 @@ namespace VortexX.Views
             ChkPowerMode.IsChecked = _s.PowerMode;
             ChkAutoStart.IsChecked = _s.AutoStart;
             ChkAnim.IsChecked = _s.Animations;
+            ChkWebJoin.IsChecked = _s.WebJoin;
             Motion.Enabled = _s.Animations;
             Motion.Init();
 
@@ -90,6 +91,7 @@ namespace VortexX.Views
                 var openFade = new System.Windows.Media.Animation.DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(350));
                 if (Motion.Enabled) WinBorder.BeginAnimation(UIElement.OpacityProperty, openFade);
                 Tick();
+                if (_s.WebJoin && RobloxService.IsInstalled(_s.InstallDir)) RobloxService.RegisterProtocols(_s.InstallDir);
                 var upd = CheckUpdateAsync(true);
                 await CheckVersionAsync();
             };
@@ -206,7 +208,7 @@ namespace VortexX.Views
                 SrvJobIdVal, SrvCountryVal, SrvRegionVal, SrvCityVal, SrvTzVal, SrvIspVal,
                 SrvCoordVal, SrvAsVal, StgDirVal);
 
-            ForeC(tx, ChkFlushDns, ChkPowerMode, ChkAutoStart, ChkAnim, RbZh, RbEn);
+            ForeC(tx, ChkFlushDns, ChkPowerMode, ChkAutoStart, ChkAnim, ChkWebJoin, RbZh, RbEn);
 
             InputIp.Background = bg;
             InputIp.Foreground = tx;
@@ -348,6 +350,7 @@ namespace VortexX.Views
             StgGenTitle.Text = U("settings.general");
             ChkAutoStart.Content = Lang.T("settings.autostart");
             ChkAnim.Content = Lang.T("settings.anim");
+            ChkWebJoin.Content = Lang.T("settings.webjoin");
             StgAboutTitle.Text = U("settings.about");
             StgAboutVer.Text = "VortexX";
             StgAboutDesc.Text = Lang.T("settings.aboutdesc");
@@ -425,7 +428,7 @@ namespace VortexX.Views
                 bool pw = ChkPowerMode.IsChecked == true;
                 string dir = _s.InstallDir;
                 Action<string> log = m => Dispatcher.BeginInvoke(new Action(() => AppendLog(LaunchLogText, LaunchLogScroll, m)));
-                await Task.Run(() => RobloxService.Launch(dir, fd, pw, log));
+                await LoadingWindow.LaunchWithProgress(dir, fd, pw, log, null);
             }
             catch (Exception ex)
             {
@@ -699,7 +702,7 @@ namespace VortexX.Views
             Action<string> log = m => Dispatcher.BeginInvoke(new Action(() => AppendLog(LaunchLogText, LaunchLogScroll, m)));
             try
             {
-                await Task.Run(() => RobloxService.Launch(dir, fd, pw, log));
+                await LoadingWindow.LaunchWithProgress(dir, fd, pw, log, null);
             }
             catch (Exception ex)
             {
@@ -1098,6 +1101,13 @@ namespace VortexX.Views
                 bool sel = (b.Tag as string) == _s.Theme.ToString();
                 b.BorderThickness = new Thickness(sel ? 3 : 1);
             }
+        }
+
+        void WebJoin_Click(object sender, RoutedEventArgs e)
+        {
+            _s.WebJoin = ChkWebJoin.IsChecked == true;
+            SettingsService.Save(_s);
+            if (RobloxService.IsInstalled(_s.InstallDir)) RobloxService.RegisterProtocols(_s.InstallDir);
         }
 
         void Anim_Click(object sender, RoutedEventArgs e)

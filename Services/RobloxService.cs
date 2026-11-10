@@ -139,7 +139,7 @@ namespace VortexX.Services
             await Task.Run(() => CopyDir(from, dir, p => progress(55 + p * 40 / 100, Lang.T("inst.copy"))));
 
             File.WriteAllText(Path.Combine(dir, "version.txt"), ver);
-            RegisterProtocol(dir);
+            RegisterProtocols(dir);
             try { File.Delete(tmp); } catch { }
 
             string done = string.Format(Lang.T("inst.done"), ver);
@@ -160,11 +160,16 @@ namespace VortexX.Services
             }
         }
 
-        static void RegisterProtocol(string dir)
+        public static void RegisterProtocols(string dir)
         {
             try
             {
-                string exe = Path.Combine(dir, "RobloxPlayerBeta.exe");
+                string self = Environment.ProcessPath ?? "";
+                bool web = App.Settings.Prop.WebJoin
+                    && self.Length > 0
+                    && !Path.GetFileNameWithoutExtension(self).Equals("dotnet", StringComparison.OrdinalIgnoreCase);
+                string handler = web ? self : Path.Combine(dir, "RobloxPlayerBeta.exe");
+                string command = web ? "\"" + handler + "\" -player \"%1\"" : "\"" + handler + "\" \"%1\"";
                 foreach (string proto in new string[] { "roblox-player", "roblox" })
                 {
                     using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\Classes\" + proto))
@@ -172,9 +177,13 @@ namespace VortexX.Services
                         if (k == null) continue;
                         k.SetValue("", "URL: " + proto + " Protocol");
                         k.SetValue("URL Protocol", "");
+                        using (RegistryKey ic = k.CreateSubKey("DefaultIcon"))
+                        {
+                            if (ic != null) ic.SetValue("", handler);
+                        }
                         using (RegistryKey cmd = k.CreateSubKey(@"shell\open\command"))
                         {
-                            if (cmd != null) cmd.SetValue("", "\"" + exe + "\" \"%1\"");
+                            if (cmd != null) cmd.SetValue("", command);
                         }
                     }
                 }
@@ -198,7 +207,7 @@ namespace VortexX.Services
             catch { }
         }
 
-        public static bool Launch(string dir, bool flush, bool power, Action<string> log)
+        public static bool Launch(string dir, bool flush, bool power, Action<string> log, string uri = null)
         {
             if (flush)
             {
@@ -224,13 +233,14 @@ namespace VortexX.Services
                     }
                 }
                 catch (Exception ex) { log("Mods: " + ex.Message); }
-                var psi = new ProcessStartInfo(exe, "--app");
+                var psi = new ProcessStartInfo(exe, string.IsNullOrEmpty(uri) ? "--app" : "\"" + uri + "\"");
                 psi.WorkingDirectory = dir;
                 psi.UseShellExecute = false;
                 Process.Start(psi);
                 log(Lang.T("log.started"));
                 return true;
             }
+            if (!string.IsNullOrEmpty(uri)) return false;
             Process.Start(new ProcessStartInfo("roblox://") { UseShellExecute = true });
             log(Lang.T("log.fallback"));
             return false;

@@ -14,6 +14,7 @@ namespace VortexX.Models
         public bool FlushDns { get; set; } = true;
         public bool PowerMode { get; set; } = true;
         public bool AutoStart { get; set; } = false;
+        public bool WebJoin { get; set; } = true;
         public bool Animations { get; set; } = true;
         public bool ApplyMods { get; set; } = true;
         public Dictionary<string, string> SkyFaces { get; set; } = new Dictionary<string, string>();

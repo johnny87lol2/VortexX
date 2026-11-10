@@ -720,6 +720,7 @@
                                     <StackPanel Margin="18,14">
                                         <CheckBox x:Name="ChkAutoStart" FontFamily="Segoe UI" FontSize="13" Click="AutoStart_Click"/>
                                         <CheckBox x:Name="ChkAnim" FontFamily="Segoe UI" FontSize="13" Margin="0,12,0,0" Click="Anim_Click"/>
+                                        <CheckBox x:Name="ChkWebJoin" FontFamily="Segoe UI" FontSize="13" Margin="0,12,0,0" Click="WebJoin_Click"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
